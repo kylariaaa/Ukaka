@@ -8,10 +8,12 @@ use Illuminate\View\View;
 class AppLayout extends Component
 {
     public $title;
+    public $showSearch;
 
-    public function __construct($title = null)
+    public function __construct($title = null, $showSearch = true)
     {
         $this->title = $title;
+        $this->showSearch = $showSearch;
     }
 
     /**

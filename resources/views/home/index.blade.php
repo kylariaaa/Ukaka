@@ -4,33 +4,31 @@
     <section class="relative overflow-hidden bg-gray-900">
         <div class="banner-track flex" id="banner-track">
             @php
-                $bannerColors = [
-                    ['bg' => '#1a1a2e', 'accent' => '#FF8A4C', 'text' => 'Lunar Day Special', 'sub' => 'Diskon up to 15%'],
-                    ['bg' => '#16213e', 'accent' => '#4CAF50', 'text' => 'New Arrivals 2025', 'sub' => 'Figure & Model Kit Terbaru'],
-                    ['bg' => '#0f3460', 'accent' => '#e94560', 'text' => 'Flash Sale', 'sub' => 'Acrylic Stand & Merchandise'],
+                $slides = [
+                    ['img' => 'images/slideshow (1).png', 'accent' => '#FF8A4C', 'text' => 'Lunar Day Special', 'sub' => 'Diskon up to 15%'],
+                    ['img' => 'images/slideshow (2).png', 'accent' => '#4CAF50', 'text' => 'New Arrivals 2025', 'sub' => 'Figure & Model Kit Terbaru'],
+                    ['img' => 'images/slideshow (3).png', 'accent' => '#e94560', 'text' => 'Flash Sale', 'sub' => 'Acrylic Stand & Merchandise'],
                 ];
             @endphp
-            @foreach($bannerColors as $i => $b)
-            <div class="banner-slide flex-shrink-0 w-full h-56 md:h-64 flex items-center justify-center relative"
-                 style="background-color: {{ $b['bg'] }};">
-                <div class="text-center z-10">
-                    <div class="inline-block px-4 py-1 rounded-full text-xs font-bold mb-4 text-white"
-                         style="background-color: {{ $b['accent'] }};">
+            @foreach($slides as $i => $s)
+            <div class="banner-slide flex-shrink-0 w-full h-56 md:h-64 lg:h-80 relative bg-gray-900 flex items-center justify-center">
+                <img src="{{ asset($s['img']) }}" alt="Promo Slide {{ $i + 1 }}" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/60"></div>
+                <div class="text-center z-10 relative">
+                    <div class="inline-block px-4 py-1 rounded-full text-xs font-bold mb-4 text-white shadow-md"
+                         style="background-color: {{ $s['accent'] }};">
                         ✦ EXCLUSIVE
                     </div>
-                    <h2 class="text-3xl md:text-4xl font-black text-white mb-2">{{ $b['text'] }}</h2>
-                    <p class="text-gray-300 text-sm">{{ $b['sub'] }}</p>
+                    <h2 class="text-3xl md:text-5xl font-black text-white mb-2 drop-shadow-md">{{ $s['text'] }}</h2>
+                    <p class="text-gray-200 text-sm md:text-lg drop-shadow">{{ $s['sub'] }}</p>
                 </div>
-                {{-- Decorative circles --}}
-                <div class="absolute top-4 right-8 w-24 h-24 rounded-full opacity-10" style="background: {{ $b['accent'] }};"></div>
-                <div class="absolute bottom-4 left-8 w-16 h-16 rounded-full opacity-10" style="background: {{ $b['accent'] }};"></div>
             </div>
             @endforeach
         </div>
         {{-- Dots --}}
         <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-            @foreach($bannerColors as $i => $b)
-                <button onclick="goBanner({{ $i }})" class="banner-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white transition-colors" id="dot-{{ $i }}"></button>
+            @foreach($slides as $i => $s)
+                <button onclick="goBanner({{ $i }})" class="banner-dot w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-colors shadow-sm" id="dot-{{ $i }}"></button>
             @endforeach
         </div>
     </section>
@@ -43,15 +41,15 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @foreach($categories as $category)
                 <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-                    <div class="flex items-start gap-4">
-                        <div class="bg-blue-600 text-white rounded-lg px-4 py-3 min-w-[120px] text-sm font-bold flex items-center justify-center text-center leading-tight">
+                    <div class="flex flex-col gap-4">
+                        <div class="bg-blue-600 text-white rounded-lg px-4 py-2 w-full text-center text-sm font-bold tracking-wide">
                             {{ $category->name }}
                         </div>
-                        <div class="grid grid-cols-5 gap-2 flex-1">
+                        <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
                             @foreach($category->products->take(5) as $product)
-                                <div class="aspect-square rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
-                                    @if($product->image && file_exists(public_path('storage/' . $product->image)))
-                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                                <div class="aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                                    @if($product->image && file_exists(public_path($product->image)))
+                                        <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
                                              class="w-full h-full object-cover">
                                     @else
                                         <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
@@ -72,7 +70,10 @@
         {{-- FLASH SALE --}}
         @if($flashSales->count() > 0)
         <section class="mb-10">
-            <h2 class="text-lg font-bold text-gray-800 mb-4">Flash Sale Special Lunar Day! 🔥</h2>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-800">Flash Sale Special Lunar Day! 🔥</h2>
+                <a href="{{ route('products.flash-sale') }}" class="text-sm font-semibold text-orange hover:text-orange/80 transition-colors">Lihat Semua →</a>
+            </div>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 {{-- Promo Card --}}
                 <div class="bg-orange rounded-xl flex items-center justify-center p-4 min-h-[200px]">
@@ -95,6 +96,7 @@
         <section class="mb-10">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-lg font-bold text-gray-800">Explore More! ✨</h2>
+                <a href="{{ route('products.new-arrivals') }}" class="text-sm font-semibold text-orange hover:text-orange/80 transition-colors">Lihat Semua →</a>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 @foreach($newReleases as $product)
@@ -115,7 +117,7 @@
         let currentBanner = 0;
         const track = document.getElementById('banner-track');
         const dots  = document.querySelectorAll('.banner-dot');
-        const total = {{ count($bannerColors) }};
+        const total = {{ count($slides) }};
 
         function goBanner(index) {
             currentBanner = index;

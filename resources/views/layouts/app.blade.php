@@ -22,25 +22,24 @@
             </a>
 
             {{-- Search Bar --}}
+            @if($showSearch)
             <div class="hidden md:flex flex-1 max-w-md mx-8">
-                <div class="relative w-full">
+                <form action="{{ route('products.index') }}" method="GET" class="relative w-full">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
                     </div>
-                    <input type="text" placeholder="Tobat apa hari ini?" class="w-full pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange/50 focus:border-orange transition-all">
-                </div>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Tobat apa hari ini?" class="w-full pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange/50 focus:border-orange transition-all">
+                </form>
             </div>
+            @endif
 
             {{-- Right side icons --}}
             <div class="flex items-center gap-4">
                 {{-- Cart icon --}}
-                @auth
-                <a href="{{ route('cart') }}" class="relative p-2 text-gray-600 hover:text-orange transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                    </svg>
+                <a href="{{ route('cart') }}" class="relative p-2 text-gray-800 hover:text-orange transition-colors">
+                    <img src="{{ asset('images/carticon.png') }}" alt="Cart" class="w-6 h-6 hover:scale-110 transition-transform">
                     @php $cartCount = count(session('cart', [])); @endphp
                     @if($cartCount > 0)
                     <span class="absolute -top-1 -right-1 bg-orange text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{{ $cartCount }}</span>
@@ -48,12 +47,9 @@
                 </a>
 
                 {{-- History icon --}}
-                <a href="{{ route('payment-history') }}" class="p-2 text-gray-600 hover:text-orange transition-colors" title="Riwayat Pembayaran">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+                <a href="{{ route('payment-history') }}" class="p-2 text-gray-800 hover:text-orange transition-colors" title="Riwayat Pembayaran">
+                    <img src="{{ asset('images/history-pay.png') }}" alt="History" class="w-6 h-6 hover:scale-110 transition-transform">
                 </a>
-                @endauth
 
                 {{-- Divider --}}
                 <div class="w-px h-6 bg-gray-200"></div>
@@ -163,29 +159,17 @@
             <div>
                 <h4 class="text-sm font-semibold text-gray-900 mb-4">Payment</h4>
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-                        <svg class="w-5 h-5 text-blue-700" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
-                        </svg>
-                        <span class="text-xs font-semibold text-blue-700">PayPal</span>
+                    <div class="flex items-center justify-center bg-gray-50 rounded-lg px-3 py-2 w-full h-10">
+                        <img src="{{ asset('images/paypal.png') }}" alt="PayPal" class="max-h-5 object-contain">
                     </div>
-                    <div class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-                        <div class="w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold">D</span>
-                        </div>
-                        <span class="text-xs font-semibold text-teal-600">DANA</span>
+                    <div class="flex items-center justify-center bg-gray-50 rounded-lg px-3 py-2 w-full h-10">
+                        <img src="{{ asset('images/dana.png') }}" alt="DANA" class="max-h-5 object-contain">
                     </div>
-                    <div class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-                        <div class="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold">B</span>
-                        </div>
-                        <span class="text-xs font-semibold text-blue-800">BCA</span>
+                    <div class="flex items-center justify-center bg-gray-50 rounded-lg px-3 py-2 w-full h-10">
+                        <img src="{{ asset('images/bca.png') }}" alt="BCA" class="max-h-5 object-contain">
                     </div>
-                    <div class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-                        <div class="w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold">M</span>
-                        </div>
-                        <span class="text-xs font-semibold text-yellow-700">Mandiri</span>
+                    <div class="flex items-center justify-center bg-gray-50 rounded-lg px-3 py-2 w-full h-10">
+                        <img src="{{ asset('images/mandiri.jpg') }}" alt="Mandiri" class="max-h-5 object-contain mix-blend-multiply rounded-sm">
                     </div>
                 </div>
                 <p class="text-xs text-gray-400 mt-3">Coming Soon.....</p>

@@ -1,4 +1,4 @@
-<x-app-layout title="Shopping Cart — KylariaSHOP">
+<x-app-layout title="Shopping Cart — KylariaSHOP" :showSearch="false">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {{-- Page Header --}}
@@ -23,8 +23,8 @@
 
                     {{-- Product Image --}}
                     <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
-                        @if($product->image && file_exists(public_path('storage/' . $product->image)))
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                        @if($product->image && file_exists(public_path($product->image)))
+                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
                                  class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">

@@ -21,7 +21,7 @@ class ProductSeeder extends Seeder
                 'price' => 1500000,
                 'discount_price' => 1300000,
                 'stock' => 5,
-                'image' => null,
+                'image' => 'images/mech-produk (1).webp',
                 'is_new' => false,
                 'categories' => [$figure ? $figure->id : null],
             ],
@@ -32,7 +32,7 @@ class ProductSeeder extends Seeder
                 'price' => 1750000,
                 'discount_price' => 1500000,
                 'stock' => 3,
-                'image' => null,
+                'image' => 'images/mech-produk (2).webp',
                 'is_new' => false,
                 'categories' => [$figure ? $figure->id : null],
             ],
@@ -43,7 +43,7 @@ class ProductSeeder extends Seeder
                 'price' => 600000,
                 'discount_price' => 500000,
                 'stock' => 10,
-                'image' => null,
+                'image' => 'images/mech-produk (3).webp',
                 'is_new' => false,
                 'categories' => [$kostum ? $kostum->id : null],
             ],
@@ -54,7 +54,7 @@ class ProductSeeder extends Seeder
                 'price' => 500000,
                 'discount_price' => 350000,
                 'stock' => 8,
-                'image' => null,
+                'image' => 'images/mech-produk (4).webp',
                 'is_new' => false,
                 'categories' => [$kostum ? $kostum->id : null],
             ],
@@ -65,7 +65,7 @@ class ProductSeeder extends Seeder
                 'price' => 1300000,
                 'discount_price' => null,
                 'stock' => 7,
-                'image' => null,
+                'image' => 'images/mech-produk (5).webp',
                 'is_new' => true,
                 'categories' => [$figure ? $figure->id : null],
             ],
@@ -76,7 +76,7 @@ class ProductSeeder extends Seeder
                 'price' => 1300000,
                 'discount_price' => null,
                 'stock' => 6,
-                'image' => null,
+                'image' => 'images/mech-produk (6).webp',
                 'is_new' => true,
                 'categories' => [$figure ? $figure->id : null],
             ],
@@ -87,7 +87,7 @@ class ProductSeeder extends Seeder
                 'price' => 1300000,
                 'discount_price' => null,
                 'stock' => 4,
-                'image' => null,
+                'image' => 'images/mech-produk (7).webp',
                 'is_new' => true,
                 'categories' => [$figure ? $figure->id : null],
             ],
@@ -98,7 +98,7 @@ class ProductSeeder extends Seeder
                 'price' => 1300000,
                 'discount_price' => null,
                 'stock' => 3,
-                'image' => null,
+                'image' => 'images/mech-produk (8).webp',
                 'is_new' => true,
                 'categories' => [$figure ? $figure->id : null],
             ],
@@ -107,7 +107,7 @@ class ProductSeeder extends Seeder
         foreach ($products as $data) {
             $categoryIds = array_filter($data['categories']);
             unset($data['categories']);
-            $product = Product::firstOrCreate(['slug' => $data['slug']], $data);
+            $product = Product::updateOrCreate(['slug' => $data['slug']], $data);
             if (!empty($categoryIds)) {
                 $product->categories()->sync($categoryIds);
             }

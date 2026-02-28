@@ -3,8 +3,8 @@
 <div class="bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300 hover:-translate-y-1 group cursor-pointer">
     {{-- Product Image --}}
     <div class="relative overflow-hidden bg-gray-100 aspect-square">
-        @if($product->image && file_exists(public_path('storage/' . $product->image)))
-            <img src="{{ asset('storage/' . $product->image) }}"
+        @if($product->image && file_exists(public_path($product->image)))
+            <img src="{{ asset($product->image) }}"
                  alt="{{ $product->name }}"
                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
         @else
@@ -17,9 +17,6 @@
 
         {{-- Badges --}}
         <div class="absolute top-2 left-2 flex flex-col gap-1">
-            @if($product->is_new)
-                <span class="bg-blue-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">NEW RELEASE</span>
-            @endif
             @if($product->discount_price)
                 <span class="bg-orange text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ $product->discount_percent }}%</span>
             @endif
@@ -28,6 +25,11 @@
 
     {{-- Product Info --}}
     <div class="p-3">
+        @if($product->is_new)
+            <div class="mb-1.5">
+                <span class="bg-blue-600 text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full uppercase">NEW RELEASE</span>
+            </div>
+        @endif
         <h3 class="text-sm font-semibold text-gray-800 truncate mb-1.5" title="{{ $product->name }}">
             {{ $product->name }}
         </h3>

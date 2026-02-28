@@ -1,4 +1,4 @@
-<x-app-layout title="Riwayat Pembayaran — KylariaSHOP">
+<x-app-layout title="Riwayat Pembayaran — KylariaSHOP" :showSearch="false">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {{-- Header --}}
@@ -41,8 +41,8 @@
 
                         {{-- Product Image --}}
                         <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
-                            @if($item->product->image && file_exists(public_path('storage/' . $item->product->image)))
-                                <img src="{{ asset('storage/' . $item->product->image) }}"
+                            @if($item->product->image && file_exists(public_path($item->product->image)))
+                                <img src="{{ asset($item->product->image) }}"
                                      alt="{{ $item->product->name }}"
                                      class="w-full h-full object-cover">
                             @else
