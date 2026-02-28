@@ -29,5 +29,12 @@ Route::middleware('auth')->group(function () {
 // Admin routes
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\AdminController::class , 'index'])->name('admin.dashboard');
-    Route::get('/products/create', [\App\Http\Controllers\AdminProductController::class , 'create'])->name('admin.products.create');
+
+    // Products
+    Route::resource('products', \App\Http\Controllers\AdminProductController::class)->names('admin.products')->except(['show']);
+
+    // Orders
+    Route::get('/orders', [\App\Http\Controllers\AdminOrderController::class , 'index'])->name('admin.orders.index');
+    Route::patch('/orders/{id}/accept', [\App\Http\Controllers\AdminOrderController::class , 'accept'])->name('admin.orders.accept');
+    Route::patch('/orders/{id}/reject', [\App\Http\Controllers\AdminOrderController::class , 'reject'])->name('admin.orders.reject');
 });
