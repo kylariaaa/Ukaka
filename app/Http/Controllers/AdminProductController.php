@@ -10,27 +10,18 @@ use Illuminate\Support\Str;
 
 class AdminProductController extends Controller
 {
-    /**
-     * Show the form for creating a new product.
-     */
     public function index()
     {
-        $products = Product::latest()->paginate(10);
+        $products = Product::with('category')->latest()->paginate(10);
         return view('admin.products.index', compact('products'));
     }
 
-    /**
-     * Show the form for creating a new product.
-     */
     public function create()
     {
         $categories = Category::all();
         return view('admin.products.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created product in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -38,11 +29,13 @@ class AdminProductController extends Controller
             'description' => 'nullable|string',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'sale_type' => 'required|in:none,flash_sale,lunar_day',
+            'price_per_day' => 'nullable|integer|min:0',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         $hasDiscount = $request->input('has_discount') === 'yes';
 
-        // Base price
         $price = $request->input('price');
         $discountPrice = null;
 
@@ -54,8 +47,8 @@ class AdminProductController extends Controller
             }
         }
         else {
-            if (!$price) {
-                return back()->withErrors(['price' => 'Price is required.'])->withInput();
+            if (!$price && !$request->filled('price_per_day')) {
+                return back()->withErrors(['price' => 'Price atau Price Per Day wajib diisi.'])->withInput();
             }
         }
 
@@ -69,32 +62,25 @@ class AdminProductController extends Controller
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'description' => $request->description,
-            'price' => $price,
+            'price' => $price ?? 0,
             'discount_price' => $discountPrice,
             'stock' => $request->stock,
             'image' => $imagePath,
-            'is_new' => true, // By default newly added products are 'new arrivals'
+            'is_new' => true,
+            'sale_type' => $request->sale_type,
+            'price_per_day' => $request->price_per_day,
+            'category_id' => $request->category_id,
         ]);
-
-        if ($request->filled('category_id')) {
-            $product->categories()->attach($request->category_id);
-        }
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    /**
-     * Show the form for editing the specified product.
-     */
     public function edit(Product $product)
     {
         $categories = Category::all();
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
-    /**
-     * Update the specified product in storage.
-     */
     public function update(Request $request, Product $product)
     {
         $request->validate([
@@ -102,6 +88,9 @@ class AdminProductController extends Controller
             'description' => 'nullable|string',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'sale_type' => 'required|in:none,flash_sale,lunar_day',
+            'price_per_day' => 'nullable|integer|min:0',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         $hasDiscount = $request->input('has_discount') === 'yes';
@@ -117,14 +106,13 @@ class AdminProductController extends Controller
             }
         }
         else {
-            if (!$price) {
-                return back()->withErrors(['price' => 'Price is required.'])->withInput();
+            if (!$price && !$request->filled('price_per_day')) {
+                return back()->withErrors(['price' => 'Price atau Price Per Day wajib diisi.'])->withInput();
             }
         }
 
         $imagePath = $product->image;
         if ($request->hasFile('image')) {
-            // Delete old image if it's not a placeholder
             if ($product->image && $product->image !== 'images/placeholder-product.png') {
                 $oldPath = str_replace('storage/', '', $product->image);
                 Storage::disk('public')->delete($oldPath);
@@ -137,25 +125,20 @@ class AdminProductController extends Controller
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'description' => $request->description,
-            'price' => $price,
+            'price' => $price ?? $product->price,
             'discount_price' => $discountPrice,
             'stock' => $request->stock,
             'image' => $imagePath,
+            'sale_type' => $request->sale_type,
+            'price_per_day' => $request->price_per_day,
+            'category_id' => $request->category_id,
         ]);
-
-        if ($request->has('category_id')) {
-            $product->categories()->sync($request->filled('category_id') ? [$request->category_id] : []);
-        }
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diupdate!');
     }
 
-    /**
-     * Remove the specified product from storage.
-     */
     public function destroy(Product $product)
     {
-        // Delete image if not placeholder
         if ($product->image && $product->image !== 'images/placeholder-product.png') {
             $oldPath = str_replace('storage/', '', $product->image);
             Storage::disk('public')->delete($oldPath);
@@ -163,6 +146,6 @@ class AdminProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('admin.products.index')->with('success', 'Produk beserta data terkait berhasil dihapus.');
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil dihapus.');
     }
 }

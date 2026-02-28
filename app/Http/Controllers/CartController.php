@@ -11,15 +11,26 @@ class CartController extends Controller
     {
         $cart = session('cart', []);
 
-        // Hydrate product data
         $cartItems = [];
         foreach ($cart as $productId => $item) {
-            $product = Product::find($productId);
+            $product = Product::with('category')->find($productId);
             if ($product) {
+                $isCostume = $product->isCostume();
+                $rentalDays = $item['rental_days'] ?? 1;
+
+                if ($isCostume && $product->price_per_day) {
+                    $subtotal = $product->price_per_day * $rentalDays;
+                }
+                else {
+                    $subtotal = $product->effective_price * $item['quantity'];
+                }
+
                 $cartItems[] = [
                     'product' => $product,
                     'quantity' => $item['quantity'],
-                    'subtotal' => $product->effective_price * $item['quantity'],
+                    'rental_days' => $rentalDays,
+                    'subtotal' => $subtotal,
+                    'is_costume' => $isCostume,
                 ];
             }
         }
@@ -34,18 +45,24 @@ class CartController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
+            'rental_days' => 'nullable|integer|min:1|max:7',
         ]);
 
         $productId = $request->product_id;
         $quantity = $request->quantity;
+        $rentalDays = $request->rental_days ?? 1;
 
         $cart = session('cart', []);
 
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity'] += $quantity;
+            $cart[$productId]['rental_days'] = $rentalDays;
         }
         else {
-            $cart[$productId] = ['quantity' => $quantity];
+            $cart[$productId] = [
+                'quantity' => $quantity,
+                'rental_days' => $rentalDays,
+            ];
         }
 
         session(['cart' => $cart]);
@@ -71,11 +88,15 @@ class CartController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
+            'rental_days' => 'nullable|integer|min:1|max:7',
         ]);
 
         $cart = session('cart', []);
         if (isset($cart[$request->product_id])) {
             $cart[$request->product_id]['quantity'] = $request->quantity;
+            if ($request->filled('rental_days')) {
+                $cart[$request->product_id]['rental_days'] = $request->rental_days;
+            }
             session(['cart' => $cart]);
         }
 

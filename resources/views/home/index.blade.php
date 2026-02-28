@@ -67,11 +67,11 @@
             </div>
         </section>
 
-        {{-- FLASH SALE --}}
-        @if($flashSales->count() > 0)
+        {{-- LUNAR DAY --}}
+        @if($lunarSales->count() > 0)
         <section class="mb-10">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-bold text-gray-800">Flash Sale Special Lunar Day! 🔥</h2>
+                <h2 class="text-lg font-bold text-gray-800">Flash Sale Special Lunar Day! 🌙</h2>
                 <a href="{{ route('products.flash-sale') }}" class="text-sm font-semibold text-orange hover:text-orange/80 transition-colors">Lihat Semua →</a>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -83,6 +83,30 @@
                         <div class="mt-3 text-3xl">🎊</div>
                     </div>
                 </div>
+                {{-- Lunar Day Products --}}
+                @foreach($lunarSales as $product)
+                    <x-product-card :product="$product" />
+                @endforeach
+            </div>
+        </section>
+        @endif
+
+        {{-- FLASH SALE BIASA --}}
+        @if($flashSales->count() > 0)
+        <section class="mb-10">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-800">Flash Sale ⚡</h2>
+                <a href="{{ route('products.flash-sale') }}" class="text-sm font-semibold text-orange hover:text-orange/80 transition-colors">Lihat Semua →</a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                {{-- Promo Card --}}
+                <div class="bg-red-500 rounded-xl flex items-center justify-center p-4 min-h-[200px]">
+                    <div class="text-center text-white">
+                        <p class="text-xs font-semibold opacity-80 mb-1">Flash Sale</p>
+                        <p class="text-xl font-black">Terbatas!</p>
+                        <div class="mt-3 text-3xl">⚡</div>
+                    </div>
+                </div>
                 {{-- Flash Sale Products --}}
                 @foreach($flashSales as $product)
                     <x-product-card :product="$product" />
@@ -90,6 +114,7 @@
             </div>
         </section>
         @endif
+
 
         {{-- NEW RELEASES --}}
         @if($newReleases->count() > 0)

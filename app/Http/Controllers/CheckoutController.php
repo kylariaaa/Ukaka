@@ -23,9 +23,15 @@ class CheckoutController extends Controller
 
         $total = 0;
         foreach ($cart as $productId => $item) {
-            $product = Product::find($productId);
+            $product = Product::with('category')->find($productId);
             if ($product) {
-                $total += $product->effective_price * $item['quantity'];
+                if ($product->isCostume() && $product->price_per_day) {
+                    $rentalDays = $item['rental_days'] ?? 1;
+                    $total += $product->price_per_day * $rentalDays;
+                }
+                else {
+                    $total += $product->effective_price * $item['quantity'];
+                }
             }
         }
 
@@ -45,18 +51,29 @@ class CheckoutController extends Controller
             return redirect()->route('cart')->with('error', 'Keranjang belanja kosong!');
         }
 
-        // Calculate total and build items
         $total = 0;
         $orderItems = [];
 
         foreach ($cart as $productId => $item) {
-            $product = Product::find($productId);
+            $product = Product::with('category')->find($productId);
             if (!$product)
                 continue;
 
-            $price = $product->effective_price;
-            $qty = $item['quantity'];
-            $subtotal = $price * $qty;
+            $isCostume = $product->isCostume();
+            $rentalDays = $item['rental_days'] ?? 1;
+
+            if ($isCostume && $product->price_per_day) {
+                $price = $product->price_per_day;
+                $qty = 1; // Kostum selalu qty 1, dihitung dari hari
+                $subtotal = $price * $rentalDays;
+            }
+            else {
+                $price = $product->effective_price;
+                $qty = $item['quantity'];
+                $subtotal = $price * $qty;
+                $rentalDays = null;
+            }
+
             $total += $subtotal;
 
             $orderItems[] = [
@@ -64,6 +81,7 @@ class CheckoutController extends Controller
                 'quantity' => $qty,
                 'price' => $price,
                 'subtotal' => $subtotal,
+                'rental_days' => $rentalDays,
             ];
         }
 

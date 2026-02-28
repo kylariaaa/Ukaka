@@ -18,36 +18,64 @@
             {{-- Name Product --}}
             <div class="mb-6">
                 <label for="name" class="block text-gray-900 font-black text-xl mb-2">Name Product</label>
-                <input type="text" id="name" name="name" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors" required>
+                <input type="text" id="name" name="name" value="{{ old('name') }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors" required>
             </div>
 
             {{-- Description Product --}}
             <div class="mb-6">
                 <label for="description" class="block text-gray-900 font-black text-xl mb-2">Deskripsi Product</label>
-                <textarea id="description" name="description" rows="3" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors"></textarea>
+                <textarea id="description" name="description" rows="3" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">{{ old('description') }}</textarea>
             </div>
             
-            {{-- Category & Stock (Additional needed fields not in mockup but required logically) --}}
+            {{-- Category & Stock --}}
             <div class="grid grid-cols-2 gap-6 mb-6">
                 <div>
                     <label for="category_id" class="block text-gray-900 font-black text-xl mb-2">Category</label>
-                    <select id="category_id" name="category_id" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
+                    <select id="category_id" name="category_id" onchange="handleCategoryChange(this.value)" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
                         <option value="">-- No Category --</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
                     <label for="stock" class="block text-gray-900 font-black text-xl mb-2">Stock</label>
-                    <input type="number" id="stock" name="stock" min="0" value="10" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors" required>
+                    <input type="number" id="stock" name="stock" min="0" value="{{ old('stock', 10) }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors" required>
                 </div>
+            </div>
+
+            {{-- Sale Type Toggle --}}
+            <div class="mb-6">
+                <label class="block text-gray-900 font-black text-xl mb-2">Tipe Produk</label>
+                <div class="flex gap-3 flex-wrap">
+                    <button type="button" id="sale-none" onclick="selectSaleType('none')"
+                        class="sale-type-btn px-6 py-2 rounded-xl text-white font-bold bg-[#0000FF] uppercase shadow-sm">
+                        Normal
+                    </button>
+                    <button type="button" id="sale-flash_sale" onclick="selectSaleType('flash_sale')"
+                        class="sale-type-btn px-6 py-2 rounded-xl border border-gray-300 font-bold text-gray-700 bg-white hover:bg-gray-50 uppercase shadow-sm">
+                        ⚡ Flash Sale
+                    </button>
+                    <button type="button" id="sale-lunar_day" onclick="selectSaleType('lunar_day')"
+                        class="sale-type-btn px-6 py-2 rounded-xl border border-gray-300 font-bold text-gray-700 bg-white hover:bg-gray-50 uppercase shadow-sm">
+                        🌙 Lunar Day
+                    </button>
+                </div>
+                <input type="hidden" name="sale_type" id="sale_type_input" value="{{ old('sale_type', 'none') }}">
+                <p class="text-xs text-gray-500 mt-2">Flash Sale dan Lunar Day akan ditampilkan di section khusus halaman utama.</p>
+            </div>
+
+            {{-- Price Per Day (hanya untuk Costume) --}}
+            <div id="price-per-day-container" class="mb-6 hidden">
+                <label for="price_per_day" class="block text-gray-900 font-black text-xl mb-2">Harga Sewa Per Hari (IDR)</label>
+                <input type="number" id="price_per_day" name="price_per_day" min="0" value="{{ old('price_per_day') }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
+                <p class="text-xs text-gray-500 mt-1">Pengguna bisa sewa maks. 7 hari. Total = harga per hari × jumlah hari.</p>
             </div>
 
             {{-- Standard Price --}}
             <div class="mb-8" id="standard-price-container">
                 <label for="price" class="block text-gray-900 font-black text-xl mb-2">Price Product</label>
-                <input type="number" id="price" name="price" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
+                <input type="number" id="price" name="price" value="{{ old('price') }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
             </div>
 
             {{-- Discount Toggle --}}
@@ -58,17 +86,18 @@
                     <button type="button" id="btn-no" class="px-8 py-2 rounded-xl text-white font-bold bg-[#0000FF] uppercase shadow-sm w-32">NO</button>
                 </div>
                 <input type="hidden" name="has_discount" id="has_discount" value="no">
+                <p class="text-xs text-gray-500 mt-1">Berlaku juga untuk produk Flash Sale dan Lunar Day — masukkan harga asli dan harga setelah diskon.</p>
             </div>
 
-            {{-- Discount Pricing Fields (Hidden by default) --}}
+            {{-- Discount Pricing Fields --}}
             <div id="discount-fields" class="hidden space-y-6 mb-8">
                 <div>
-                    <label for="initial_price" class="block text-gray-900 font-black text-xl mb-2">initial price</label>
-                    <input type="number" id="initial_price" name="initial_price" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
+                    <label for="initial_price" class="block text-gray-900 font-black text-xl mb-2">Initial Price (Harga Asli)</label>
+                    <input type="number" id="initial_price" name="initial_price" value="{{ old('initial_price') }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
                 </div>
                 <div>
-                    <label for="discount_price" class="block text-gray-900 font-black text-xl mb-2">Discount Price</label>
-                    <input type="number" id="discount_price" name="discount_price" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
+                    <label for="discount_price" class="block text-gray-900 font-black text-xl mb-2">Discount Price (Harga Setelah Diskon)</label>
+                    <input type="number" id="discount_price" name="discount_price" value="{{ old('discount_price') }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
                 </div>
             </div>
 
@@ -96,6 +125,31 @@
     </div>
 
     <script>
+        // ---- Sale Type ----
+        function selectSaleType(type) {
+            document.getElementById('sale_type_input').value = type;
+            document.querySelectorAll('.sale-type-btn').forEach(btn => {
+                btn.className = 'sale-type-btn px-6 py-2 rounded-xl border border-gray-300 font-bold text-gray-700 bg-white hover:bg-gray-50 uppercase shadow-sm';
+            });
+            const active = document.getElementById('sale-' + type);
+            if (active) active.className = 'sale-type-btn px-6 py-2 rounded-xl text-white font-bold bg-[#0000FF] uppercase shadow-sm';
+        }
+
+        // ---- Category Change ----
+        function handleCategoryChange(categoryId) {
+            const select = document.getElementById('category_id');
+            const selectedOption = select.options[select.selectedIndex];
+            const slug = (selectedOption ? selectedOption.getAttribute('data-slug') : '') || '';
+            const pricePerDayContainer = document.getElementById('price-per-day-container');
+            const isCostume = slug.includes('kostum') || slug.includes('costume');
+            if (isCostume) {
+                pricePerDayContainer.classList.remove('hidden');
+            } else {
+                pricePerDayContainer.classList.add('hidden');
+            }
+        }
+
+        // ---- Discount Toggle ----
         document.addEventListener('DOMContentLoaded', function() {
             const btnYes = document.getElementById('btn-yes');
             const btnNo = document.getElementById('btn-no');
@@ -106,34 +160,31 @@
             const imageNameDisplay = document.getElementById('image-name');
 
             btnYes.addEventListener('click', function() {
-                // Set 'YES' active state (blue)
                 btnYes.className = 'px-8 py-2 rounded-xl text-white font-bold bg-[#0000FF] uppercase shadow-sm w-32';
-                // Set 'NO' inactive state (white)
                 btnNo.className = 'px-8 py-2 rounded-xl border border-gray-300 font-bold text-gray-700 bg-white hover:bg-gray-50 uppercase shadow-sm w-32';
-                
                 hasDiscountInput.value = 'yes';
                 discountFields.classList.remove('hidden');
                 standardPriceContainer.classList.add('hidden');
             });
 
             btnNo.addEventListener('click', function() {
-                // Set 'NO' active state (blue)
                 btnNo.className = 'px-8 py-2 rounded-xl text-white font-bold bg-[#0000FF] uppercase shadow-sm w-32';
-                // Set 'YES' inactive state (white)
                 btnYes.className = 'px-8 py-2 rounded-xl border border-gray-300 font-bold text-gray-700 bg-white hover:bg-gray-50 uppercase shadow-sm w-32';
-                
                 hasDiscountInput.value = 'no';
                 discountFields.classList.add('hidden');
                 standardPriceContainer.classList.remove('hidden');
             });
             
             imageInput.addEventListener('change', function() {
-                if (this.files && this.files.length > 0) {
-                    imageNameDisplay.textContent = "Selected: " + this.files[0].name;
-                } else {
-                    imageNameDisplay.textContent = "";
-                }
+                imageNameDisplay.textContent = this.files.length > 0 ? "Selected: " + this.files[0].name : "";
             });
+
+            // Restore sale_type on old() back
+            const savedType = document.getElementById('sale_type_input').value || 'none';
+            selectSaleType(savedType);
+
+            // Restore category show/hide
+            handleCategoryChange(document.getElementById('category_id').value);
         });
     </script>
 </x-admin-layout>

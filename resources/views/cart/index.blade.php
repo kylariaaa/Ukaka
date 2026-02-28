@@ -38,42 +38,85 @@
                     {{-- Product Details --}}
                     <div class="flex-1 min-w-0">
                         <h3 class="font-semibold text-gray-800 text-sm truncate">{{ $product->name }}</h3>
-                        <p class="text-red-500 font-bold text-sm mt-0.5">
-                            @if($product->discount_price)
-                                {{ $product->rupiah_discount_price }}
-                            @else
-                                {{ $product->rupiah_price }}
-                            @endif
-                        </p>
-                        <p class="text-xs text-gray-400 mt-0.5">Stock: {{ $product->stock }}</p>
 
-                        {{-- Quantity controls --}}
-                        <div class="flex items-center gap-2 mt-2">
-                            <span class="text-xs text-gray-500">Jumlah:</span>
-                            <form action="{{ route('cart.update') }}" method="POST" class="flex items-center gap-1" id="qty-form-{{ $loop->index }}">
+                        @if($item['is_costume'] && $product->price_per_day)
+                            {{-- Costume: tampilkan harga per hari --}}
+                            <p class="text-red-500 font-bold text-sm mt-0.5">
+                                IDR {{ number_format($product->price_per_day, 0, ',', '.') }} / hari
+                            </p>
+                            <p class="text-xs text-gray-400 mt-0.5">Stock: {{ $product->stock }}</p>
+
+                            {{-- Rental Days Input --}}
+                            <form action="{{ route('cart.update') }}" method="POST" class="mt-2" id="rental-form-{{ $loop->index }}">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="quantity" id="qty-input-{{ $loop->index }}" value="{{ $item['quantity'] }}">
-
-                                <button type="button" onclick="changeQty({{ $loop->index }}, -1, {{ $product->stock }})"
-                                    class="w-7 h-7 rounded-lg border border-gray-300 hover:border-orange hover:text-orange text-gray-600 flex items-center justify-center text-sm font-bold transition-colors">
-                                    −
-                                </button>
-                                <span id="qty-display-{{ $loop->index }}" class="w-8 text-center text-sm font-semibold text-gray-800">
-                                    {{ $item['quantity'] }}
-                                </span>
-                                <button type="button" onclick="changeQty({{ $loop->index }}, 1, {{ $product->stock }})"
-                                    class="w-7 h-7 rounded-lg border border-gray-300 hover:border-orange hover:text-orange text-gray-600 flex items-center justify-center text-sm font-bold transition-colors">
-                                    +
-                                </button>
+                                <input type="hidden" name="quantity" value="1">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="text-xs text-gray-500 font-medium">Jumlah:</span>
+                                    <span class="text-xs font-bold text-gray-700">1</span>
+                                    <span class="text-gray-300 mx-1">|</span>
+                                    <span class="text-xs text-purple-600 font-semibold">🗓 Lama Sewa:</span>
+                                    <div class="flex items-center gap-1">
+                                        <button type="button" onclick="changeRental({{ $loop->index }}, -1)"
+                                            class="w-7 h-7 rounded-lg border border-gray-300 hover:border-purple-500 hover:text-purple-600 text-gray-600 flex items-center justify-center text-sm font-bold transition-colors">
+                                            −
+                                        </button>
+                                        <span id="rental-display-{{ $loop->index }}" class="w-8 text-center text-sm font-semibold text-gray-800">
+                                            {{ $item['rental_days'] }}
+                                        </span>
+                                        <input type="hidden" name="rental_days" id="rental-input-{{ $loop->index }}" value="{{ $item['rental_days'] }}">
+                                        <button type="button" onclick="changeRental({{ $loop->index }}, 1)"
+                                            class="w-7 h-7 rounded-lg border border-gray-300 hover:border-purple-500 hover:text-purple-600 text-gray-600 flex items-center justify-center text-sm font-bold transition-colors">
+                                            +
+                                        </button>
+                                        <span class="text-xs text-gray-400 ml-1">hari (maks. 7)</span>
+                                    </div>
+                                </div>
                             </form>
-                        </div>
+                        @else
+                            {{-- Produk biasa: harga & qty --}}
+                            <p class="text-red-500 font-bold text-sm mt-0.5">
+                                @if($product->discount_price)
+                                    {{ $product->rupiah_discount_price }}
+                                @else
+                                    {{ $product->rupiah_price }}
+                                @endif
+                            </p>
+                            <p class="text-xs text-gray-400 mt-0.5">Stock: {{ $product->stock }}</p>
+
+                            {{-- Quantity controls --}}
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="text-xs text-gray-500">Jumlah:</span>
+                                <form action="{{ route('cart.update') }}" method="POST" class="flex items-center gap-1" id="qty-form-{{ $loop->index }}">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="quantity" id="qty-input-{{ $loop->index }}" value="{{ $item['quantity'] }}">
+
+                                    <button type="button" onclick="changeQty({{ $loop->index }}, -1, {{ $product->stock }})"
+                                        class="w-7 h-7 rounded-lg border border-gray-300 hover:border-orange hover:text-orange text-gray-600 flex items-center justify-center text-sm font-bold transition-colors">
+                                        −
+                                    </button>
+                                    <span id="qty-display-{{ $loop->index }}" class="w-8 text-center text-sm font-semibold text-gray-800">
+                                        {{ $item['quantity'] }}
+                                    </span>
+                                    <button type="button" onclick="changeQty({{ $loop->index }}, 1, {{ $product->stock }})"
+                                        class="w-7 h-7 rounded-lg border border-gray-300 hover:border-orange hover:text-orange text-gray-600 flex items-center justify-center text-sm font-bold transition-colors">
+                                        +
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
 
                     {{-- Subtotal --}}
                     <div class="text-right flex-shrink-0">
                         <p class="text-xs text-gray-400 mb-1">Subtotal</p>
-                        <p class="font-bold text-gray-800 text-sm">IDR {{ number_format($item['subtotal'], 0, ',', '.') }}</p>
+                        @if($item['is_costume'])
+                            <p class="font-bold text-gray-800 text-sm">IDR {{ number_format($item['subtotal'], 0, ',', '.') }}</p>
+                            <p class="text-xs text-purple-500">{{ $item['rental_days'] }} hari × IDR {{ number_format($product->price_per_day, 0, ',', '.') }}</p>
+                        @else
+                            <p class="font-bold text-gray-800 text-sm">IDR {{ number_format($item['subtotal'], 0, ',', '.') }}</p>
+                        @endif
                     </div>
 
                     {{-- Delete Button --}}
@@ -131,15 +174,28 @@
     </div>
 
     <script>
+        // Quantity control untuk produk biasa
         function changeQty(index, delta, maxStock) {
             const input   = document.getElementById('qty-input-' + index);
             const display = document.getElementById('qty-display-' + index);
             let qty       = parseInt(input.value) + delta;
             if (qty < 1)        qty = 1;
             if (qty > maxStock) qty = maxStock;
-            input.value   = qty;
+            input.value         = qty;
             display.textContent = qty;
             document.getElementById('qty-form-' + index).submit();
+        }
+
+        // Rental days control untuk kostum (maks 7 hari)
+        function changeRental(index, delta) {
+            const input   = document.getElementById('rental-input-' + index);
+            const display = document.getElementById('rental-display-' + index);
+            let days      = parseInt(input.value) + delta;
+            if (days < 1) days = 1;
+            if (days > 7) days = 7;
+            input.value         = days;
+            display.textContent = days;
+            document.getElementById('rental-form-' + index).submit();
         }
     </script>
 </x-app-layout>
