@@ -1,7 +1,7 @@
 <x-admin-layout title="Admin Dashboard">
 
     <div class="mb-10">
-        <h1 class="text-4xl font-extrabold text-black mb-3">Selamat Datang {{ auth()->user()->name }}!</h1>
+        <h1 class="text-4xl font-extrabold text-black mb-3">Selamat Datang {{ Auth::guard('admin')->user()->name }}!</h1>
         <p class="text-xl text-gray-800">Periksa kembali stok dan jangan lupa bersyukur</p>
     </div>
 

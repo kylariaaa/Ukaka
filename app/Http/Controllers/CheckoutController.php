@@ -10,10 +10,33 @@ use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
+    /**
+     * Show the checkout page with total and address form.
+     */
+    public function create()
+    {
+        $cart = session('cart', []);
+
+        if (empty($cart)) {
+            return redirect()->route('cart')->with('error', 'Keranjang belanja kosong!');
+        }
+
+        $total = 0;
+        foreach ($cart as $productId => $item) {
+            $product = Product::find($productId);
+            if ($product) {
+                $total += $product->effective_price * $item['quantity'];
+            }
+        }
+
+        return view('checkout.create', compact('total'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
             'payment_method' => 'required|string|in:paypal,dana,bca,mandiri',
+            'address' => 'required|string|min:10',
         ]);
 
         $cart = session('cart', []);
@@ -51,6 +74,7 @@ class CheckoutController extends Controller
             'total_price' => $total,
             'status' => 'process',
             'payment_method' => $request->payment_method,
+            'address' => $request->address,
         ]);
 
         // Create order items

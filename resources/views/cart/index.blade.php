@@ -102,59 +102,10 @@
                     <div class="flex-1 bg-orange/5 rounded-xl p-3 text-center">
                         <p class="text-xs text-gray-500 font-bold mb-1">TOTAL: <span class="text-orange">IDR {{ number_format($total, 0, ',', '.') }}</span></p>
                     </div>
-                    <button onclick="document.getElementById('checkout-modal').classList.remove('hidden')"
+                    <a href="{{ route('checkout.create') }}"
                         class="flex-1 bg-orange hover:bg-orange-dark text-white font-black py-3 px-6 rounded-xl transition-colors text-center uppercase tracking-wide">
                         PAYMENT
-                    </button>
-                </div>
-            </div>
-
-            {{-- Checkout Modal --}}
-            <div id="checkout-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
-                    <div class="flex items-center justify-between mb-5">
-                        <h2 class="text-lg font-bold text-gray-900">Pilih Metode Pembayaran</h2>
-                        <button onclick="document.getElementById('checkout-modal').classList.add('hidden')"
-                            class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors">
-                            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <form action="{{ route('checkout.store') }}" method="POST">
-                        @csrf
-                        <div class="grid grid-cols-2 gap-3 mb-5">
-                            @foreach([
-                                ['value' => 'paypal', 'label' => 'PayPal', 'color' => 'text-blue-700', 'bg' => 'border-blue-200 hover:border-blue-400'],
-                                ['value' => 'dana', 'label' => 'DANA', 'color' => 'text-teal-600', 'bg' => 'border-teal-200 hover:border-teal-400'],
-                                ['value' => 'bca', 'label' => 'BCA', 'color' => 'text-blue-800', 'bg' => 'border-blue-200 hover:border-blue-400'],
-                                ['value' => 'mandiri', 'label' => 'Mandiri', 'color' => 'text-yellow-700', 'bg' => 'border-yellow-200 hover:border-yellow-400'],
-                            ] as $method)
-                            <label class="relative cursor-pointer">
-                                <input type="radio" name="payment_method" value="{{ $method['value'] }}" class="sr-only peer" required>
-                                <div class="border-2 {{ $method['bg'] }} peer-checked:border-orange peer-checked:bg-orange/5 rounded-xl p-4 flex items-center gap-3 transition-all">
-                                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-bold text-xs {{ $method['color'] }}">
-                                        {{ strtoupper(substr($method['label'], 0, 1)) }}
-                                    </div>
-                                    <span class="font-semibold text-sm {{ $method['color'] }}">{{ $method['label'] }}</span>
-                                </div>
-                            </label>
-                            @endforeach
-                        </div>
-
-                        <div class="border-t border-gray-100 pt-4 mb-4">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">Total Pembayaran</span>
-                                <span class="font-black text-orange">IDR {{ number_format($total, 0, ',', '.') }}</span>
-                            </div>
-                        </div>
-
-                        <button type="submit"
-                            class="w-full bg-orange hover:bg-orange-dark text-white font-black py-3 rounded-xl transition-colors uppercase tracking-wide">
-                            Konfirmasi Pembayaran
-                        </button>
-                    </form>
+                    </a>
                 </div>
             </div>
 

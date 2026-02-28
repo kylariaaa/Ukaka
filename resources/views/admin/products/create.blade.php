@@ -2,7 +2,7 @@
 
     <div class="max-w-3xl mx-auto bg-transparent">
         
-        <form action="{{ route('admin.dashboard') }}" method="POST" enctype="multipart/form-data" class="bg-white/50 backdrop-blur-sm rounded-3xl p-10 border border-gray-200">
+        <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="bg-white/50 backdrop-blur-sm rounded-3xl p-10 border border-gray-200">
             @csrf
             
             @if($errors->any())

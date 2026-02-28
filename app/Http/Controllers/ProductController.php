@@ -129,4 +129,12 @@ class ProductController extends Controller
 
         return view('products.index', compact('products', 'categories', 'pageTitle'));
     }
+
+    /**
+     * Display the specified product.
+     */
+    public function show(Product $product)
+    {
+        return view('products.show', compact('product'));
+    }
 }

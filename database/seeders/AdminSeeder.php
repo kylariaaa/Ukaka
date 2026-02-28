@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,12 +13,11 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        User::updateOrCreate(
+        Admin::updateOrCreate(
         ['email' => 'admin@kylariashop.com'],
         [
             'name' => 'Edmin',
             'password' => Hash::make('password'),
-            'is_admin' => true,
         ]
         );
     }

@@ -1,6 +1,7 @@
 @props(['product'])
 
-<div class="bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300 hover:-translate-y-1 group cursor-pointer">
+<a href="{{ route('products.show', $product->slug) }}" class="block group cursor-pointer">
+<div class="bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300 hover:-translate-y-1">
     {{-- Product Image --}}
     <div class="relative overflow-hidden bg-gray-100 aspect-square">
         @if($product->image && file_exists(public_path($product->image)))
@@ -56,10 +57,10 @@
                 </button>
             </form>
         @else
-            <a href="{{ route('login') }}"
-               class="block w-full bg-orange hover:bg-orange-dark text-white text-xs font-bold py-2 rounded-lg transition-colors text-center uppercase tracking-wide">
+            <div class="block w-full bg-orange hover:bg-orange-dark text-white text-xs font-bold py-2 rounded-lg transition-colors text-center uppercase tracking-wide">
                 READY STOK
-            </a>
+            </div>
         @endauth
     </div>
 </div>
+</a>

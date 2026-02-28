@@ -22,42 +22,42 @@ class AdminOrderController extends Controller
     }
 
     /**
-     * Accept an order (change status to finished).
+     * Accept an order (change status to finished, deduct stock).
      */
     public function accept(Request $request, $id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with('orderItems.product')->findOrFail($id);
 
         if ($order->status !== 'process') {
             return back()->withErrors(['error' => 'Pesanan tidak valid untuk diterima.']);
         }
 
+        // Deduct stock for each item in the order
+        foreach ($order->orderItems as $item) {
+            if ($item->product) {
+                $item->product->decrement('stock', $item->quantity);
+            }
+        }
+
         $order->update(['status' => 'finished']);
 
-        return redirect()->route('admin.orders.index')->with('success', 'Pesanan berhasil diterima dan diselesaikan.');
+        return redirect()->route('admin.orders.index')->with('success', 'Pesanan berhasil diterima dan stok diperbarui.');
     }
 
     /**
-     * Reject an order (change status to rejected, refund stock).
+     * Reject an order (change status to rejected).
+     * Stock is NOT returned because it was never deducted (deduction only happens on accept).
      */
     public function reject(Request $request, $id)
     {
-        $order = Order::with('orderItems.product')->findOrFail($id);
+        $order = Order::findOrFail($id);
 
         if ($order->status !== 'process') {
             return back()->withErrors(['error' => 'Pesanan tidak valid untuk ditolak.']);
         }
 
-        // Refund stock for each item in the order
-        foreach ($order->orderItems as $item) {
-            if ($item->product) {
-                // Return ordered quantity back to inventory
-                $item->product->increment('stock', $item->quantity);
-            }
-        }
-
         $order->update(['status' => 'rejected']);
 
-        return redirect()->route('admin.orders.index')->with('success', 'Pesanan berhasil ditolak dan stok dikembalikan.');
+        return redirect()->route('admin.orders.index')->with('success', 'Pesanan berhasil ditolak.');
     }
 }
