@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+    --font-inter: 'Inter', 'sans-serif';
+
+    --color-orange: #FF8A4C;
+    --color-orange-dark: #e6743b;
+    --color-orange-light: #ffaa7f;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: var(--font-inter);
+        color: #1f2937;
+        -webkit-font-smoothing: antialiased;
+    }
+}
+
+@layer components {
+    .btn-orange {
+        background-color: var(--color-orange);
+        color: white;
+        font-weight: 700;
+        padding: 0.625rem 1.5rem;
+        border-radius: 0.75rem;
+        transition: background-color 0.2s;
+    }
+
+    .btn-orange:hover {
+        background-color: var(--color-orange-dark);
+    }
+}
+
+/* Banner animation */
+.banner-track {
+    transition: transform 0.5s ease-in-out;
+}
