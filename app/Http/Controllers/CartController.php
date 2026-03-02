@@ -18,8 +18,10 @@ class CartController extends Controller
                 $isCostume = $product->isCostume();
                 $rentalDays = $item['rental_days'] ?? 1;
 
-                if ($isCostume && $product->price_per_day) {
-                    $subtotal = $product->price_per_day * $rentalDays;
+                if ($isCostume) {
+                    // Kostum: multiply active price × rental days
+                    $activePrice = $product->discount_price ?? $product->price_per_day ?? $product->price;
+                    $subtotal = $activePrice * $rentalDays;
                 }
                 else {
                     $subtotal = $product->effective_price * $item['quantity'];

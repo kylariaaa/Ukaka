@@ -15,4 +15,10 @@ class Category extends Model
     {
         return $this->belongsToMany(Product::class);
     }
+
+    // Produk yang di-assign melalui category_id langsung (dipakai admin)
+    public function productsDirect()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

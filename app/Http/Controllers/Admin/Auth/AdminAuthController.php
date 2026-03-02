@@ -32,6 +32,9 @@ class AdminAuthController extends Controller
         ]);
 
         if (Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
+            // Logout sesi user biasa jika ada
+            Auth::guard('web')->logout();
+
             $request->session()->regenerate();
 
             return redirect()->route('admin.dashboard');

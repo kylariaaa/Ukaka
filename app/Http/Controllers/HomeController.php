@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = Category::with('products')->get();
+        $categories = Category::with('productsDirect')->get();
 
         // Aman sebelum dan sesudah migration — cek dulu apakah kolom sale_type ada
         if (Schema::hasColumn('products', 'sale_type')) {

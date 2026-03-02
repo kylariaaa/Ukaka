@@ -137,4 +137,39 @@ class ProductController extends Controller
     {
         return view('products.show', compact('product'));
     }
+
+    /**
+     * Display all products for a given category slug.
+     */
+    public function byCategory(Request $request, Category $category)
+    {
+        $query = Product::where('category_id', $category->id)
+            ->where('stock', '>', 0);
+
+        $sort = $request->get('sort', 'newest');
+        switch ($sort) {
+            case 'price_asc':
+                $query->orderByRaw('COALESCE(discount_price, price) ASC');
+                break;
+            case 'price_desc':
+                $query->orderByRaw('COALESCE(discount_price, price) DESC');
+                break;
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'newest':
+            default:
+                $query->latest();
+                break;
+        }
+
+        $products = $query->paginate(12)->withQueryString();
+        $categories = Category::all();
+        $pageTitle = 'Kategori: ' . $category->name;
+
+        return view('products.index', compact('products', 'categories', 'pageTitle'));
+    }
 }

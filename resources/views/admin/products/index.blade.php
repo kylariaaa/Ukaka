@@ -1,4 +1,4 @@
-<x-admin-layout title="List Product">
+<x-admin-layout title="Daftar Produk">
 
     <div class="max-w-6xl mx-auto bg-transparent">
         
@@ -7,11 +7,11 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="border-b border-gray-300">
-                        <th class="py-4 px-4 font-black text-gray-900 text-lg w-1/4">Name Product</th>
-                        <th class="py-4 px-4 font-black text-gray-900 text-lg w-1/3">Description product</th>
-                        <th class="py-4 px-4 font-black text-gray-900 text-lg">Price</th>
-                        <th class="py-4 px-4 font-black text-gray-900 text-lg">Stock</th>
-                        <th class="py-4 px-4 font-black text-gray-900 text-lg text-right">Action</th>
+                        <th class="py-4 px-4 font-black text-gray-900 text-lg w-1/4">Nama Produk</th>
+                        <th class="py-4 px-4 font-black text-gray-900 text-lg w-1/3">Deskripsi Produk</th>
+                        <th class="py-4 px-4 font-black text-gray-900 text-lg">Harga</th>
+                        <th class="py-4 px-4 font-black text-gray-900 text-lg">Stok</th>
+                        <th class="py-4 px-4 font-black text-gray-900 text-lg text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-300">
@@ -42,11 +42,11 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="bg-[#FF0000] hover:bg-red-600 text-white font-bold py-1.5 px-6 rounded-lg text-sm w-24 text-center transition-colors">
-                                    DELETE
+                                    HAPUS
                                 </button>
                             </form>
                             <a href="{{ route('admin.products.edit', $product->id) }}" class="bg-[#4A0505] hover:bg-[#310303] text-white font-bold py-1.5 px-6 rounded-lg text-sm w-24 text-center transition-colors">
-                                EDIT
+                                UBAH
                             </a>
                         </td>
                     </tr>

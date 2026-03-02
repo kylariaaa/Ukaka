@@ -4,9 +4,7 @@
         {{-- Page Header --}}
         <div class="flex items-center gap-3 mb-6">
             <a href="{{ route('home') }}" class="text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
+                <img src="{{ asset('images/back-icon.png') }}" alt="Back" class="w-5 h-5">
             </a>
             <h1 class="text-xl font-bold text-gray-900">Keranjang Belanja</h1>
             @if(count($cartItems) > 0)
@@ -39,11 +37,18 @@
                     <div class="flex-1 min-w-0">
                         <h3 class="font-semibold text-gray-800 text-sm truncate">{{ $product->name }}</h3>
 
-                        @if($item['is_costume'] && $product->price_per_day)
-                            {{-- Costume: tampilkan harga per hari --}}
-                            <p class="text-red-500 font-bold text-sm mt-0.5">
-                                IDR {{ number_format($product->price_per_day, 0, ',', '.') }} / hari
-                            </p>
+                        @if($item['is_costume'])
+                            {{-- Costume: tampilkan harga diskon atau harga per hari --}}
+                            @if($product->discount_price)
+                                <p class="text-red-500 font-bold text-sm mt-0.5">
+                                    IDR {{ number_format($product->discount_price, 0, ',', '.') }} / hari
+                                    <span class="text-gray-400 font-normal line-through text-xs ml-1">IDR {{ number_format($product->price_per_day ?? $product->price, 0, ',', '.') }}</span>
+                                </p>
+                            @else
+                                <p class="text-red-500 font-bold text-sm mt-0.5">
+                                    IDR {{ number_format($product->price_per_day, 0, ',', '.') }} / hari
+                                </p>
+                            @endif
                             <p class="text-xs text-gray-400 mt-0.5">Stock: {{ $product->stock }}</p>
 
                             {{-- Rental Days Input --}}
@@ -94,14 +99,14 @@
 
                                     <button type="button" onclick="changeQty({{ $loop->index }}, -1, {{ $product->stock }})"
                                         class="w-7 h-7 rounded-lg border border-gray-300 hover:border-orange hover:text-orange text-gray-600 flex items-center justify-center text-sm font-bold transition-colors">
-                                        −
+                                        <img src="{{ asset('images/qtyminus-icon.png') }}" alt="-" class="w-3 h-3">
                                     </button>
                                     <span id="qty-display-{{ $loop->index }}" class="w-8 text-center text-sm font-semibold text-gray-800">
                                         {{ $item['quantity'] }}
                                     </span>
                                     <button type="button" onclick="changeQty({{ $loop->index }}, 1, {{ $product->stock }})"
                                         class="w-7 h-7 rounded-lg border border-gray-300 hover:border-orange hover:text-orange text-gray-600 flex items-center justify-center text-sm font-bold transition-colors">
-                                        +
+                                        <img src="{{ asset('images/qtyplus-icon.png') }}" alt="+" class="w-3 h-3">
                                     </button>
                                 </form>
                             </div>
@@ -112,8 +117,9 @@
                     <div class="text-right flex-shrink-0">
                         <p class="text-xs text-gray-400 mb-1">Subtotal</p>
                         @if($item['is_costume'])
+                            @php $activePrice = $product->discount_price ?? $product->price_per_day ?? $product->price; @endphp
                             <p class="font-bold text-gray-800 text-sm">IDR {{ number_format($item['subtotal'], 0, ',', '.') }}</p>
-                            <p class="text-xs text-purple-500">{{ $item['rental_days'] }} hari × IDR {{ number_format($product->price_per_day, 0, ',', '.') }}</p>
+                            <p class="text-xs text-purple-500">{{ $item['rental_days'] }} hari × IDR {{ number_format($activePrice, 0, ',', '.') }}</p>
                         @else
                             <p class="font-bold text-gray-800 text-sm">IDR {{ number_format($item['subtotal'], 0, ',', '.') }}</p>
                         @endif
@@ -125,9 +131,7 @@
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <button type="submit"
                             class="w-9 h-9 rounded-xl bg-red-50 hover:bg-red-100 text-red-500 flex items-center justify-center transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
+                            <img src="{{ asset('images/delete-icon.png') }}" alt="Hapus" class="w-4 h-4">
                         </button>
                     </form>
                 </div>
@@ -156,17 +160,13 @@
             {{-- Empty Cart --}}
             <div class="text-center py-20">
                 <div class="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                    </svg>
+                    <img src="{{ asset('images/carticon.png') }}" alt="Cart" class="w-12 h-12 opacity-40">
                 </div>
                 <h3 class="text-lg font-semibold text-gray-700 mb-2">Keranjangmu kosong</h3>
                 <p class="text-sm text-gray-400 mb-6">Yuk, tambahkan produk ke keranjang dulu!</p>
                 <a href="{{ route('home') }}"
                    class="inline-flex items-center gap-2 bg-orange hover:bg-orange-dark text-white font-bold py-3 px-8 rounded-xl transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
+                    <img src="{{ asset('images/back-icon.png') }}" alt="Back" class="w-4 h-4">
                     Lanjut Belanja
                 </a>
             </div>

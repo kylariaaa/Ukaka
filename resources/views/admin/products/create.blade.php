@@ -1,4 +1,4 @@
-<x-admin-layout title="Add Product">
+<x-admin-layout title="Tambah Produk">
 
     <div class="max-w-3xl mx-auto bg-transparent">
         
@@ -17,7 +17,7 @@
 
             {{-- Name Product --}}
             <div class="mb-6">
-                <label for="name" class="block text-gray-900 font-black text-xl mb-2">Name Product</label>
+                <label for="name" class="block text-gray-900 font-black text-xl mb-2">Nama Produk</label>
                 <input type="text" id="name" name="name" value="{{ old('name') }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors" required>
             </div>
 
@@ -30,16 +30,16 @@
             {{-- Category & Stock --}}
             <div class="grid grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label for="category_id" class="block text-gray-900 font-black text-xl mb-2">Category</label>
+                    <label for="category_id" class="block text-gray-900 font-black text-xl mb-2">Kategori</label>
                     <select id="category_id" name="category_id" onchange="handleCategoryChange(this.value)" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
-                        <option value="">-- No Category --</option>
+                        <option value="">-- Tanpa Kategori --</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
-                    <label for="stock" class="block text-gray-900 font-black text-xl mb-2">Stock</label>
+                    <label for="stock" class="block text-gray-900 font-black text-xl mb-2">Stok</label>
                     <input type="number" id="stock" name="stock" min="0" value="{{ old('stock', 10) }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors" required>
                 </div>
             </div>
@@ -74,36 +74,31 @@
 
             {{-- Standard Price --}}
             <div class="mb-8" id="standard-price-container">
-                <label for="price" class="block text-gray-900 font-black text-xl mb-2">Price Product</label>
+                <label for="price" class="block text-gray-900 font-black text-xl mb-2">Harga Produk</label>
                 <input type="number" id="price" name="price" value="{{ old('price') }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
             </div>
 
             {{-- Discount Toggle --}}
             <div class="mb-6">
-                <label class="block text-gray-900 font-black text-xl mb-2">is there a discount?</label>
+                <label class="block text-gray-900 font-black text-xl mb-2">Ada diskon?</label>
                 <div class="flex gap-4">
-                    <button type="button" id="btn-yes" class="px-8 py-2 rounded-xl border border-gray-300 font-bold text-gray-700 bg-white hover:bg-gray-50 uppercase shadow-sm w-32">YES</button>
-                    <button type="button" id="btn-no" class="px-8 py-2 rounded-xl text-white font-bold bg-[#0000FF] uppercase shadow-sm w-32">NO</button>
+                    <button type="button" id="btn-yes" class="px-8 py-2 rounded-xl border border-gray-300 font-bold text-gray-700 bg-white hover:bg-gray-50 uppercase shadow-sm w-32">YA</button>
+                    <button type="button" id="btn-no" class="px-8 py-2 rounded-xl text-white font-bold bg-[#0000FF] uppercase shadow-sm w-32">TIDAK</button>
                 </div>
                 <input type="hidden" name="has_discount" id="has_discount" value="no">
-                <p class="text-xs text-gray-500 mt-1">Berlaku juga untuk produk Flash Sale dan Lunar Day — masukkan harga asli dan harga setelah diskon.</p>
+                <p class="text-xs text-gray-500 mt-1">Jika ada diskon, isi harga produk di atas sebagai harga asli, lalu masukkan harga diskonnya di bawah.</p>
             </div>
 
             {{-- Discount Pricing Fields --}}
-            <div id="discount-fields" class="hidden space-y-6 mb-8">
-                <div>
-                    <label for="initial_price" class="block text-gray-900 font-black text-xl mb-2">Initial Price (Harga Asli)</label>
-                    <input type="number" id="initial_price" name="initial_price" value="{{ old('initial_price') }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
-                </div>
-                <div>
-                    <label for="discount_price" class="block text-gray-900 font-black text-xl mb-2">Discount Price (Harga Setelah Diskon)</label>
-                    <input type="number" id="discount_price" name="discount_price" value="{{ old('discount_price') }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
-                </div>
+            <div id="discount-fields" class="hidden mb-8">
+                <label for="discount_price" class="block text-gray-900 font-black text-xl mb-2">Harga Diskon</label>
+                <input type="number" id="discount_price" name="discount_price" value="{{ old('discount_price') }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors" placeholder="Masukkan harga setelah diskon">
+                <p class="text-xs text-gray-500 mt-1">Masukkan harga yang ingin ditampilkan kepada pembeli.</p>
             </div>
 
             {{-- Image Upload --}}
             <div class="mb-8 relative">
-                <label class="block text-gray-900 font-black text-xl mb-2 uppercase">ADD IMAGE</label>
+                <label class="block text-gray-900 font-black text-xl mb-2 uppercase">TAMBAH GAMBAR</label>
                 <input type="file" name="image" id="image" class="hidden" accept="image/*">
                 
                 <button type="button" onclick="document.getElementById('image').click()" class="bg-[#0000FF] hover:bg-blue-700 text-white w-14 h-10 rounded-xl flex items-center justify-center transition-colors">
@@ -112,12 +107,13 @@
                     </svg>
                 </button>
                 <div id="image-name" class="text-sm text-gray-500 mt-2 italic"></div>
+                <p class="text-xs text-gray-500 mt-1">Biarkan kosong jika tidak ingin mengubah gambar.</p>
             </div>
             
             {{-- Submit --}}
             <div class="text-right">
                 <button type="submit" class="bg-[#4A0505] hover:bg-[#320303] text-white font-bold py-3 px-8 rounded-xl shadow-md transition-colors text-lg">
-                    Save Product
+                    Simpan Produk
                 </button>
             </div>
 
@@ -141,11 +137,15 @@
             const selectedOption = select.options[select.selectedIndex];
             const slug = (selectedOption ? selectedOption.getAttribute('data-slug') : '') || '';
             const pricePerDayContainer = document.getElementById('price-per-day-container');
-            const isCostume = slug.includes('kostum') || slug.includes('costume');
+            const standardPriceContainer = document.getElementById('standard-price-container');
+            const isCostume = slug.includes('kostum') || slug.includes('costume') || slug.includes('cosplay');
             if (isCostume) {
                 pricePerDayContainer.classList.remove('hidden');
+                // Untuk cosplay, harga sewa = harga asli, sembunyikan field harga produk biasa
+                standardPriceContainer.classList.add('hidden');
             } else {
                 pricePerDayContainer.classList.add('hidden');
+                standardPriceContainer.classList.remove('hidden');
             }
         }
 
@@ -164,7 +164,7 @@
                 btnNo.className = 'px-8 py-2 rounded-xl border border-gray-300 font-bold text-gray-700 bg-white hover:bg-gray-50 uppercase shadow-sm w-32';
                 hasDiscountInput.value = 'yes';
                 discountFields.classList.remove('hidden');
-                standardPriceContainer.classList.add('hidden');
+                // Harga Produk tetap terlihat sebagai patokan harga asli
             });
 
             btnNo.addEventListener('click', function() {
@@ -172,11 +172,11 @@
                 btnYes.className = 'px-8 py-2 rounded-xl border border-gray-300 font-bold text-gray-700 bg-white hover:bg-gray-50 uppercase shadow-sm w-32';
                 hasDiscountInput.value = 'no';
                 discountFields.classList.add('hidden');
-                standardPriceContainer.classList.remove('hidden');
+                // Harga Produk selalu terlihat
             });
             
             imageInput.addEventListener('change', function() {
-                imageNameDisplay.textContent = this.files.length > 0 ? "Selected: " + this.files[0].name : "";
+                imageNameDisplay.textContent = this.files.length > 0 ? "Dipilih: " + this.files[0].name : "";
             });
 
             // Restore sale_type on old() back

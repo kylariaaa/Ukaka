@@ -13,6 +13,7 @@ Route::get('/', [HomeController::class , 'index'])->name('home');
 Route::get('/products', [ProductController::class , 'index'])->name('products.index');
 Route::get('/flash-sale', [ProductController::class , 'flashSale'])->name('products.flash-sale');
 Route::get('/new-arrivals', [ProductController::class , 'newArrivals'])->name('products.new-arrivals');
+Route::get('/category/{category:slug}', [ProductController::class , 'byCategory'])->name('products.by-category');
 Route::get('/products/{product:slug}', [ProductController::class , 'show'])->name('products.show');
 
 // Auth routes (provided by Breeze)
@@ -20,11 +21,8 @@ require __DIR__ . '/auth.php';
 
 // Auth-protected routes
 Route::middleware('auth')->group(function () {
-    // Fallback dashboard route that redirects based on role
+    // User dashboard: always redirect to home (users are not admins)
     Route::get('/dashboard', function () {
-            if (Auth::guard('admin')->check()) {
-                return redirect()->route('admin.dashboard');
-            }
             return redirect()->route('home');
         }
         )->name('dashboard');

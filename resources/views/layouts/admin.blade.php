@@ -28,25 +28,19 @@
                 <a href="{{ route('admin.products.create') }}" class="flex items-center justify-between {{ request()->routeIs('admin.products.create') ? 'text-white font-bold' : 'text-[#E8E8E8] font-medium' }} hover:text-white transition-colors group">
                     <span class="text-lg">add product</span>
                     {{-- Plus Icon --}}
-                    <svg class="w-5 h-5 opacity-80 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"></path>
-                    </svg>
+                    <img src="{{ asset('images/add-icon.png') }}" alt="Add" class="w-5 h-5 opacity-80 group-hover:opacity-100">
                 </a>
                 
                 <a href="{{ route('admin.products.index') }}" class="flex items-center justify-between {{ request()->routeIs('admin.products.index') || request()->routeIs('admin.products.edit') ? 'text-white font-bold' : 'text-[#E8E8E8] font-medium' }} hover:text-white transition-colors group">
                     <span class="text-lg">List product</span>
                     {{-- List Icon --}}
-                    <svg class="w-5 h-5 opacity-80 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
+                    <img src="{{ asset('images/list-icon.png') }}" alt="List" class="w-5 h-5 opacity-80 group-hover:opacity-100">
                 </a>
 
                 <a href="{{ route('admin.orders.index') }}" class="flex items-center justify-between {{ request()->routeIs('admin.orders.index') ? 'text-white font-bold' : 'text-[#E8E8E8] font-medium' }} hover:text-white transition-colors group">
                     <span class="text-lg">Products ordered</span>
                     {{-- Order Receipt Icon --}}
-                    <svg class="w-5 h-5 opacity-80 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
+                    <img src="{{ asset('images/order-icon.png') }}" alt="Orders" class="w-5 h-5 opacity-80 group-hover:opacity-100">
                 </a>
             </nav>
         </div>

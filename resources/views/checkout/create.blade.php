@@ -6,9 +6,7 @@
         <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-300">
             <div class="flex items-center gap-4">
                 <a href="{{ route('cart') }}" class="text-gray-900 hover:text-orange transition-colors">
-                    <svg class="w-6 h-6 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
-                    </svg>
+                    <img src="{{ asset('images/back-icon.png') }}" alt="Back" class="w-6 h-6">
                 </a>
                 <span class="text-xl font-bold tracking-wide">KylariaSHOP</span>
             </div>

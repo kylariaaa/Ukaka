@@ -25,9 +25,10 @@ class CheckoutController extends Controller
         foreach ($cart as $productId => $item) {
             $product = Product::with('category')->find($productId);
             if ($product) {
-                if ($product->isCostume() && $product->price_per_day) {
+                if ($product->isCostume()) {
                     $rentalDays = $item['rental_days'] ?? 1;
-                    $total += $product->price_per_day * $rentalDays;
+                    $activePrice = $product->discount_price ?? $product->price_per_day ?? $product->price;
+                    $total += $activePrice * $rentalDays;
                 }
                 else {
                     $total += $product->effective_price * $item['quantity'];
@@ -62,8 +63,8 @@ class CheckoutController extends Controller
             $isCostume = $product->isCostume();
             $rentalDays = $item['rental_days'] ?? 1;
 
-            if ($isCostume && $product->price_per_day) {
-                $price = $product->price_per_day;
+            if ($isCostume) {
+                $price = $product->discount_price ?? $product->price_per_day ?? $product->price;
                 $qty = 1; // Kostum selalu qty 1, dihitung dari hari
                 $subtotal = $price * $rentalDays;
             }

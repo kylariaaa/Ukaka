@@ -40,14 +40,22 @@
             <h2 class="text-lg font-bold text-gray-800 mb-4">Explore By Category</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @foreach($categories as $category)
+                @if($category->productsDirect->count() > 0)
                 <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
                     <div class="flex flex-col gap-4">
-                        <div class="bg-blue-600 text-white rounded-lg px-4 py-2 w-full text-center text-sm font-bold tracking-wide">
-                            {{ $category->name }}
+                        <div class="flex items-center justify-between">
+                            <div class="bg-blue-600 text-white rounded-lg px-4 py-2 text-sm font-bold tracking-wide">
+                                {{ $category->name }}
+                            </div>
+                            <a href="{{ route('products.by-category', $category->slug) }}"
+                               class="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors whitespace-nowrap">
+                                Lihat Semua →
+                            </a>
                         </div>
                         <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
-                            @foreach($category->products->take(5) as $product)
-                                <div class="aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                            @foreach($category->productsDirect->take(5) as $product)
+                                <a href="{{ route('products.show', $product->slug) }}"
+                                   class="aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 border border-gray-200 block hover:opacity-80 transition-opacity">
                                     @if($product->image && file_exists(public_path($product->image)))
                                         <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
                                              class="w-full h-full object-cover">
@@ -58,11 +66,12 @@
                                             </svg>
                                         </div>
                                     @endif
-                                </div>
+                                </a>
                             @endforeach
                         </div>
                     </div>
                 </div>
+                @endif
                 @endforeach
             </div>
         </section>
@@ -100,7 +109,7 @@
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 {{-- Promo Card --}}
-                <div class="bg-red-500 rounded-xl flex items-center justify-center p-4 min-h-[200px]">
+                <div class="bg-blue-600 rounded-xl flex items-center justify-center p-4 min-h-[200px]">
                     <div class="text-center text-white">
                         <p class="text-xs font-semibold opacity-80 mb-1">Flash Sale</p>
                         <p class="text-xl font-black">Terbatas!</p>

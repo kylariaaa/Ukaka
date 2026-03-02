@@ -1,4 +1,4 @@
-<x-admin-layout title="Products Ordered">
+<x-admin-layout title="Produk Dipesan">
 
     <div class="max-w-6xl mx-auto bg-transparent">
         
@@ -7,11 +7,11 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="border-b border-gray-300">
-                        <th class="py-4 px-4 font-black text-gray-900 text-lg w-1/4">Name Product</th>
-                        <th class="py-4 px-4 font-black text-gray-900 text-lg w-1/4">Description Order</th>
-                        <th class="py-4 px-4 font-black text-gray-900 text-lg">Order</th>
-                        <th class="py-4 px-4 font-black text-gray-900 text-lg">Stock</th>
-                        <th class="py-4 px-4 font-black text-gray-900 text-lg text-right">Action</th>
+                        <th class="py-4 px-4 font-black text-gray-900 text-lg w-1/4">Nama Produk</th>
+                        <th class="py-4 px-4 font-black text-gray-900 text-lg w-1/4">Detail Pesanan</th>
+                        <th class="py-4 px-4 font-black text-gray-900 text-lg">Jumlah</th>
+                        <th class="py-4 px-4 font-black text-gray-900 text-lg">Stok</th>
+                        <th class="py-4 px-4 font-black text-gray-900 text-lg text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-300">
@@ -47,14 +47,14 @@
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="bg-[#FF0000] hover:bg-red-600 text-white font-bold py-1.5 px-6 rounded-lg text-sm w-28 text-center transition-colors">
-                                        REJECT
+                                        TOLAK
                                     </button>
                                 </form>
                                 <form action="{{ route('admin.orders.accept', $order->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="bg-[#4A0505] hover:bg-[#310303] text-white font-bold py-1.5 px-6 rounded-lg text-sm w-28 text-center transition-colors">
-                                        ACCEPT
+                                        TERIMA
                                     </button>
                                 </form>
                             </td>

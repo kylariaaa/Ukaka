@@ -36,19 +36,22 @@ class AdminProductController extends Controller
 
         $hasDiscount = $request->input('has_discount') === 'yes';
 
+        // price selalu diisi dari field Harga Produk
         $price = $request->input('price');
         $discountPrice = null;
 
         if ($hasDiscount) {
-            $price = $request->input('initial_price');
             $discountPrice = $request->input('discount_price');
-            if (!$price || !$discountPrice) {
-                return back()->withErrors(['error' => 'Initial price and discount price are required if there is a discount.'])->withInput();
+            if (!$price && !$request->filled('price_per_day')) {
+                return back()->withErrors(['price' => 'Harga produk wajib diisi sebagai patokan harga asli.'])->withInput();
+            }
+            if (!$discountPrice) {
+                return back()->withErrors(['discount_price' => 'Harga diskon wajib diisi jika ada diskon.'])->withInput();
             }
         }
         else {
             if (!$price && !$request->filled('price_per_day')) {
-                return back()->withErrors(['price' => 'Price atau Price Per Day wajib diisi.'])->withInput();
+                return back()->withErrors(['price' => 'Harga produk wajib diisi.'])->withInput();
             }
         }
 
@@ -56,6 +59,12 @@ class AdminProductController extends Controller
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public');
             $imagePath = 'storage/' . $path;
+        }
+
+        // Untuk kategori costume/cosplay: price_per_day = harga asli produk
+        $pricePerDay = $request->input('price_per_day');
+        if ($pricePerDay && !$price) {
+            $price = $pricePerDay;
         }
 
         $product = Product::create([
@@ -95,19 +104,22 @@ class AdminProductController extends Controller
 
         $hasDiscount = $request->input('has_discount') === 'yes';
 
+        // price selalu diisi dari field Harga Produk
         $price = $request->input('price');
         $discountPrice = null;
 
         if ($hasDiscount) {
-            $price = $request->input('initial_price');
             $discountPrice = $request->input('discount_price');
-            if (!$price || !$discountPrice) {
-                return back()->withErrors(['error' => 'Initial price and discount price are required if there is a discount.'])->withInput();
+            if (!$price && !$request->filled('price_per_day')) {
+                return back()->withErrors(['price' => 'Harga produk wajib diisi sebagai patokan harga asli.'])->withInput();
+            }
+            if (!$discountPrice) {
+                return back()->withErrors(['discount_price' => 'Harga diskon wajib diisi jika ada diskon.'])->withInput();
             }
         }
         else {
             if (!$price && !$request->filled('price_per_day')) {
-                return back()->withErrors(['price' => 'Price atau Price Per Day wajib diisi.'])->withInput();
+                return back()->withErrors(['price' => 'Harga produk wajib diisi.'])->withInput();
             }
         }
 
@@ -119,6 +131,12 @@ class AdminProductController extends Controller
             }
             $path = $request->file('image')->store('products', 'public');
             $imagePath = 'storage/' . $path;
+        }
+
+        // Untuk kategori costume/cosplay: price_per_day = harga asli produk
+        $pricePerDay = $request->input('price_per_day');
+        if ($pricePerDay && !$price) {
+            $price = $pricePerDay;
         }
 
         $product->update([

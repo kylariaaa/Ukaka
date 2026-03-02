@@ -10,19 +10,19 @@
 
         {{-- Order Completed --}}
         <div class="bg-[#8A0505] rounded-xl p-8 flex flex-col items-center justify-center min-h-[250px] shadow-sm">
-            <h2 class="text-white text-3xl font-black text-center leading-tight mb-4 uppercase">ORDER<br>COMPLETED</h2>
+            <h2 class="text-white text-3xl font-black text-center leading-tight mb-4 uppercase">PESANAN<br>SELESAI</h2>
             <div class="text-white text-7xl font-black">{{ $completedOrdersCount }}</div>
         </div>
 
         {{-- Stock --}}
         <div class="bg-[#5C0A0A] rounded-xl p-8 flex flex-col items-center justify-center min-h-[250px] shadow-sm">
-            <h2 class="text-white text-3xl font-black text-center mb-4 uppercase">STOCK</h2>
+            <h2 class="text-white text-3xl font-black text-center mb-4 uppercase">STOK</h2>
             <div class="text-white text-7xl font-black">{{ $totalStock }}</div>
         </div>
 
         {{-- Order Entered --}}
         <div class="bg-[#FF0000] rounded-xl p-8 flex flex-col items-center justify-center min-h-[250px] shadow-sm">
-            <h2 class="text-white text-3xl font-black text-center leading-tight mb-4 uppercase">ORDER<br>ENTERED</h2>
+            <h2 class="text-white text-3xl font-black text-center leading-tight mb-4 uppercase">PESANAN<br>MASUK</h2>
             <div class="text-white text-7xl font-black">{{ $enteredOrdersCount }}</div>
         </div>
 

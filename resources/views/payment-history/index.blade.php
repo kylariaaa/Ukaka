@@ -4,9 +4,7 @@
         {{-- Header --}}
         <div class="flex items-center gap-3 mb-6">
             <a href="{{ route('home') }}" class="text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
+                <img src="{{ asset('images/back-icon.png') }}" alt="Back" class="w-5 h-5">
             </a>
             <h1 class="text-xl font-bold text-gray-900">Riwayat Pembayaran</h1>
         </div>
@@ -19,7 +17,7 @@
                     <div class="flex items-center justify-between px-5 py-3 bg-gray-50 border-b border-gray-100">
                         <div class="flex items-center gap-3">
                             {{-- Status Indicator --}}
-                            <div class="w-3 h-full min-h-[20px] rounded-full {{ $order->status === 'finished' ? 'bg-green-500' : 'bg-orange' }}"></div>
+                            <div class="w-3 h-full min-h-[20px] rounded-full {{ $order->status === 'finished' ? 'bg-green-500' : ($order->status === 'rejected' ? 'bg-red-500' : 'bg-orange') }}"></div>
                             <div>
                                 <p class="text-xs text-gray-500">Kode Order</p>
                                 <p class="text-sm font-bold text-gray-800 font-mono">{{ $order->order_code }}</p>
@@ -37,7 +35,7 @@
                     <div class="flex items-center gap-4 px-5 py-4 border-b border-gray-50 last:border-0">
 
                         {{-- Status Stripe --}}
-                        <div class="w-1 self-stretch rounded-full {{ $order->status === 'finished' ? 'bg-green-500' : 'bg-orange' }} flex-shrink-0"></div>
+                        <div class="w-1 self-stretch rounded-full {{ $order->status === 'finished' ? 'bg-green-500' : ($order->status === 'rejected' ? 'bg-red-500' : 'bg-orange') }} flex-shrink-0"></div>
 
                         {{-- Product Image --}}
                         <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
@@ -66,18 +64,19 @@
                             <p class="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">Status</p>
                             @if($order->status === 'finished')
                                 <div class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-                                    </svg>
+                                    <img src="{{ asset('images/check-icon.png') }}" alt="Finished" class="w-5 h-5">
                                 </div>
                                 <p class="text-xs font-semibold text-gray-700">Finished</p>
+                            @elseif($order->status === 'rejected')
+                                <div class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center">
+                                    <img src="{{ asset('images/cancel-icon.png') }}" alt="Dibatalkan" class="w-5 h-5">
+                                </div>
+                                <p class="text-xs font-semibold text-red-600">Dibatalkan</p>
                             @else
                                 <div class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                                    </svg>
+                                    <img src="{{ asset('images/proses-icon.png') }}" alt="Proses" class="w-5 h-5 animate-spin">
                                 </div>
-                                <p class="text-xs font-semibold text-gray-700">Proces</p>
+                                <p class="text-xs font-semibold text-gray-700">Proses</p>
                             @endif
                         </div>
 

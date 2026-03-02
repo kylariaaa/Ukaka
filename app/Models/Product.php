@@ -84,12 +84,15 @@ class Product extends Model
         return null;
     }
 
-    // Harga efektif — untuk kostum pakai price_per_day (base), untuk lainnya pakai discount_price atau price
+    // Harga efektif — jika ada discount_price selalu pakai itu, untuk kostum tanpa diskon pakai price_per_day
     public function getEffectivePriceAttribute(): int
     {
+        if ($this->discount_price) {
+            return $this->discount_price;
+        }
         if ($this->isCostume() && $this->price_per_day) {
             return $this->price_per_day;
         }
-        return $this->discount_price ?? $this->price;
+        return $this->price;
     }
 }
