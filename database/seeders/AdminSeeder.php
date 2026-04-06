@@ -16,7 +16,7 @@ class AdminSeeder extends Seeder
         Admin::updateOrCreate(
         ['email' => 'admin@kylariashop.com'],
         [
-            'name' => 'Edmin',
+            'name' => 'Edmin',  
             'password' => Hash::make('password'),
         ]
         );

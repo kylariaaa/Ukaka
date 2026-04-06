@@ -18,11 +18,11 @@
         <div class="flex items-center justify-between h-16">
             {{-- Logo --}}
             <a href="{{ route('home') }}" class="text-xl font-bold text-gray-900 tracking-tight hover:text-orange transition-colors">
-                KylariaSHOP
+                HobbyShop
             </a>
 
             {{-- Search Bar --}}
-            @if($showSearch)
+            <!-- @if($showSearch)
             <div class="hidden md:flex flex-1 max-w-md mx-8">
                 <form action="{{ route('products.index') }}" method="GET" class="relative w-full">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -31,7 +31,7 @@
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Tobat apa hari ini?" class="w-full pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange/50 focus:border-orange transition-all">
                 </form>
             </div>
-            @endif
+            @endif -->
 
             {{-- Right side icons --}}
             <div class="flex items-center gap-4">
