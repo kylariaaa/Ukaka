@@ -1,11 +1,12 @@
 <x-admin-layout title="Ubah Produk">
 
     <div class="max-w-3xl mx-auto bg-transparent">
-        
-        <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data" class="bg-white/50 backdrop-blur-sm rounded-3xl p-10 border border-gray-200">
+
+        <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data"
+            class="bg-white/50 backdrop-blur-sm rounded-3xl p-10 border border-gray-200">
             @csrf
             @method('PUT')
-            
+
             @if($errors->any())
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
                     <ul>
@@ -19,20 +20,24 @@
             {{-- Name Product --}}
             <div class="mb-6">
                 <label for="name" class="block text-gray-900 font-black text-xl mb-2">Nama Produk</label>
-                <input type="text" id="name" name="name" value="{{ old('name', $product->name) }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors" required>
+                <input type="text" id="name" name="name" value="{{ old('name', $product->name) }}"
+                    class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors"
+                    required>
             </div>
 
             {{-- Description --}}
             <div class="mb-6">
                 <label for="description" class="block text-gray-900 font-black text-xl mb-2">Deskripsi Product</label>
-                <textarea id="description" name="description" rows="3" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">{{ old('description', $product->description) }}</textarea>
+                <textarea id="description" name="description" rows="3"
+                    class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">{{ old('description', $product->description) }}</textarea>
             </div>
-            
+
             {{-- Category & Stock --}}
             <div class="grid grid-cols-2 gap-6 mb-6">
                 <div>
                     <label for="category_id" class="block text-gray-900 font-black text-xl mb-2">Kategori</label>
-                    <select id="category_id" name="category_id" onchange="handleCategoryChange(this.value)" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
+                    <select id="category_id" name="category_id" onchange="handleCategoryChange(this.value)"
+                        class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
                         <option value="">-- Tanpa Kategori --</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
@@ -41,7 +46,9 @@
                 </div>
                 <div>
                     <label for="stock" class="block text-gray-900 font-black text-xl mb-2">Stok</label>
-                    <input type="number" id="stock" name="stock" min="0" value="{{ old('stock', $product->stock) }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors" required>
+                    <input type="number" id="stock" name="stock" min="0" value="{{ old('stock', $product->stock) }}"
+                        class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors"
+                        required>
                 </div>
             </div>
 
@@ -62,37 +69,51 @@
                         🌙 Lunar Day
                     </button>
                 </div>
-                <input type="hidden" name="sale_type" id="sale_type_input" value="{{ old('sale_type', $product->sale_type ?? 'none') }}">
+                <input type="hidden" name="sale_type" id="sale_type_input"
+                    value="{{ old('sale_type', $product->sale_type ?? 'none') }}">
             </div>
 
             {{-- Price Per Day (Costume only) --}}
             <div id="price-per-day-container" class="mb-6 hidden">
-                <label for="price_per_day" class="block text-gray-900 font-black text-xl mb-2">Harga Sewa Per Hari (IDR)</label>
-                <input type="number" id="price_per_day" name="price_per_day" min="0" value="{{ old('price_per_day', $product->price_per_day) }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
-                <p class="text-xs text-gray-500 mt-1">Pengguna bisa sewa maks. 7 hari. Total = harga per hari × jumlah hari.</p>
+                <label for="price_per_day" class="block text-gray-900 font-black text-xl mb-2">Harga Sewa Per Hari
+                    (IDR)</label>
+                <input type="number" id="price_per_day" name="price_per_day" min="0"
+                    value="{{ old('price_per_day', $product->price_per_day) }}"
+                    class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
+                <p class="text-xs text-gray-500 mt-1">Pengguna bisa sewa maks. 7 hari. Total = harga per hari × jumlah
+                    hari.</p>
             </div>
 
             {{-- Standard Price --}}
             <div class="mb-8" id="standard-price-container">
                 <label for="price" class="block text-gray-900 font-black text-xl mb-2">Harga Produk</label>
-                <input type="number" id="price" name="price" value="{{ old('price', $product->discount_price ? $product->price : $product->price) }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
+                <input type="number" id="price" name="price"
+                    value="{{ old('price', $product->discount_price ? $product->price : $product->price) }}"
+                    class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors">
             </div>
 
             {{-- Discount Toggle --}}
             <div class="mb-6">
                 <label class="block text-gray-900 font-black text-xl mb-2">Ada diskon?</label>
                 <div class="flex gap-4">
-                    <button type="button" id="btn-yes" class="px-8 py-2 rounded-xl {{ $product->discount_price ? 'text-white bg-[#0000FF]' : 'border border-gray-300 bg-white text-gray-700' }} font-bold uppercase shadow-sm w-32">YA</button>
-                    <button type="button" id="btn-no" class="px-8 py-2 rounded-xl {{ !$product->discount_price ? 'text-white bg-[#0000FF]' : 'border border-gray-300 bg-white text-gray-700' }} font-bold uppercase shadow-sm w-32">TIDAK</button>
+                    <button type="button" id="btn-yes"
+                        class="px-8 py-2 rounded-xl {{ $product->discount_price ? 'text-white bg-[#0000FF]' : 'border border-gray-300 bg-white text-gray-700' }} font-bold uppercase shadow-sm w-32">YA</button>
+                    <button type="button" id="btn-no"
+                        class="px-8 py-2 rounded-xl {{ !$product->discount_price ? 'text-white bg-[#0000FF]' : 'border border-gray-300 bg-white text-gray-700' }} font-bold uppercase shadow-sm w-32">TIDAK</button>
                 </div>
-                <input type="hidden" name="has_discount" id="has_discount" value="{{ $product->discount_price ? 'yes' : 'no' }}">
-                <p class="text-xs text-gray-500 mt-1">Jika ada diskon, isi harga produk di atas sebagai harga asli, lalu masukkan harga diskonnya di bawah.</p>
+                <input type="hidden" name="has_discount" id="has_discount"
+                    value="{{ $product->discount_price ? 'yes' : 'no' }}">
+                <p class="text-xs text-gray-500 mt-1">Jika ada diskon, isi harga produk di atas sebagai harga asli, lalu
+                    masukkan harga diskonnya di bawah.</p>
             </div>
 
             {{-- Discount Fields --}}
             <div id="discount-fields" class="{{ $product->discount_price ? '' : 'hidden' }} mb-8">
                 <label for="discount_price" class="block text-gray-900 font-black text-xl mb-2">Harga Diskon</label>
-                <input type="number" id="discount_price" name="discount_price" value="{{ old('discount_price', $product->discount_price) }}" class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors" placeholder="Masukkan harga setelah diskon">
+                <input type="number" id="discount_price" name="discount_price"
+                    value="{{ old('discount_price', $product->discount_price) }}"
+                    class="w-full bg-transparent border-2 border-gray-300 rounded-2xl px-4 py-3 text-lg focus:outline-none focus:border-[#4A0505] transition-colors"
+                    placeholder="Masukkan harga setelah diskon">
                 <p class="text-xs text-gray-500 mt-1">Masukkan harga yang ingin ditampilkan kepada pembeli.</p>
             </div>
 
@@ -101,9 +122,11 @@
                 <label class="block text-gray-900 font-black text-xl mb-2 uppercase">UBAH GAMBAR</label>
                 <input type="file" name="image" id="image" class="hidden" accept="image/*">
                 <div class="flex items-center gap-4">
-                    <button type="button" onclick="document.getElementById('image').click()" class="bg-[#0000FF] hover:bg-blue-700 text-white w-14 h-10 rounded-xl flex items-center justify-center transition-colors">
+                    <button type="button" onclick="document.getElementById('image').click()"
+                        class="bg-[#0000FF] hover:bg-blue-700 text-white w-14 h-10 rounded-xl flex items-center justify-center transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
+                            </path>
                         </svg>
                     </button>
                     @if($product->image)
@@ -112,11 +135,14 @@
                 </div>
                 <div id="image-name" class="text-sm text-gray-500 mt-2 italic"></div>
             </div>
-            
+
             {{-- Submit --}}
             <div class="text-right flex gap-4 justify-end">
-                <a href="{{ route('admin.products.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-xl shadow-md transition-colors text-lg">Batal</a>
-                <button type="submit" class="bg-[#4A0505] hover:bg-[#320303] text-white font-bold py-3 px-8 rounded-xl shadow-md transition-colors text-lg">Perbarui Produk</button>
+                <a href="{{ route('admin.products.index') }}"
+                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-xl shadow-md transition-colors text-lg">Batal</a>
+                <button type="submit"
+                    class="bg-[#4A0505] hover:bg-[#320303] text-white font-bold py-3 px-8 rounded-xl shadow-md transition-colors text-lg">Perbarui
+                    Produk</button>
             </div>
 
         </form>
@@ -149,7 +175,7 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const btnYes = document.getElementById('btn-yes');
             const btnNo = document.getElementById('btn-no');
             const hasDiscountInput = document.getElementById('has_discount');
@@ -158,7 +184,7 @@
             const imageInput = document.getElementById('image');
             const imageNameDisplay = document.getElementById('image-name');
 
-            btnYes.addEventListener('click', function() {
+            btnYes.addEventListener('click', function () {
                 btnYes.className = 'px-8 py-2 rounded-xl text-white font-bold bg-[#0000FF] uppercase shadow-sm w-32';
                 btnNo.className = 'px-8 py-2 rounded-xl border border-gray-300 font-bold text-gray-700 bg-white hover:bg-gray-50 uppercase shadow-sm w-32';
                 hasDiscountInput.value = 'yes';
@@ -166,7 +192,7 @@
                 // Harga Produk tetap terlihat sebagai patokan harga asli
             });
 
-            btnNo.addEventListener('click', function() {
+            btnNo.addEventListener('click', function () {
                 btnNo.className = 'px-8 py-2 rounded-xl text-white font-bold bg-[#0000FF] uppercase shadow-sm w-32';
                 btnYes.className = 'px-8 py-2 rounded-xl border border-gray-300 font-bold text-gray-700 bg-white hover:bg-gray-50 uppercase shadow-sm w-32';
                 hasDiscountInput.value = 'no';
@@ -174,7 +200,7 @@
                 // Harga Produk selalu terlihat
             });
 
-            imageInput.addEventListener('change', function() {
+            imageInput.addEventListener('change', function () {
                 imageNameDisplay.textContent = this.files.length > 0 ? "Dipilih: " + this.files[0].name : "";
             });
 

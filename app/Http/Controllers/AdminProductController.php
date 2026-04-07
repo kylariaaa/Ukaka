@@ -10,9 +10,19 @@ use Illuminate\Support\Str;
 
 class AdminProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('category')->latest()->paginate(10);
+        $query = Product::with('category');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        $products = $query->latest()->paginate(5)->withQueryString();
         return view('admin.products.index', compact('products'));
     }
 
@@ -48,8 +58,7 @@ class AdminProductController extends Controller
             if (!$discountPrice) {
                 return back()->withErrors(['discount_price' => 'Harga diskon wajib diisi jika ada diskon.'])->withInput();
             }
-        }
-        else {
+        } else {
             if (!$price && !$request->filled('price_per_day')) {
                 return back()->withErrors(['price' => 'Harga produk wajib diisi.'])->withInput();
             }
@@ -116,8 +125,7 @@ class AdminProductController extends Controller
             if (!$discountPrice) {
                 return back()->withErrors(['discount_price' => 'Harga diskon wajib diisi jika ada diskon.'])->withInput();
             }
-        }
-        else {
+        } else {
             if (!$price && !$request->filled('price_per_day')) {
                 return back()->withErrors(['price' => 'Harga produk wajib diisi.'])->withInput();
             }

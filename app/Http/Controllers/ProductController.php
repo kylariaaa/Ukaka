@@ -53,14 +53,13 @@ class ProductController extends Controller
                 break;
         }
 
-        $products = $query->paginate(12)->withQueryString();
+        $products = $query->paginate(10)->withQueryString();
         $categories = Category::all();
 
         $pageTitle = 'Semua Produk';
         if ($request->filled('search')) {
             $pageTitle = 'Hasil Pencarian: "' . $request->search . '"';
-        }
-        elseif ($request->filled('category')) {
+        } elseif ($request->filled('category')) {
             $cat = Category::where('slug', $request->category)->first();
             $pageTitle = $cat ? 'Kategori: ' . $cat->name : 'Semua Produk';
         }
@@ -92,7 +91,7 @@ class ProductController extends Controller
                 break;
         }
 
-        $products = $query->paginate(12)->withQueryString();
+        $products = $query->paginate(10)->withQueryString();
         $categories = Category::all();
         $pageTitle = 'Flash Sale - Special Lunar Day';
 
@@ -123,7 +122,7 @@ class ProductController extends Controller
                 break;
         }
 
-        $products = $query->paginate(12)->withQueryString();
+        $products = $query->paginate(10)->withQueryString();
         $categories = Category::all();
         $pageTitle = 'New Arrivals 2025';
 
@@ -166,7 +165,7 @@ class ProductController extends Controller
                 break;
         }
 
-        $products = $query->paginate(12)->withQueryString();
+        $products = $query->paginate(10)->withQueryString();
         $categories = Category::all();
         $pageTitle = 'Kategori: ' . $category->name;
 
