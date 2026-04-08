@@ -1,4 +1,4 @@
-<x-app-layout title="{{ $product->name }} - KylariaSHOP">
+<x-app-layout title="{{ $product->name }} - HoobyShoop">
 
     <div class="max-w-6xl mx-auto px-4 py-8">
         
@@ -49,19 +49,52 @@
                 
                 {{-- Badges & Title --}}
                 <div class="mb-4">
-                    <div class="flex gap-2 mb-3">
+                    <div class="flex flex-wrap gap-2 mb-4 items-center">
+
+                        {{-- NEW RELEASE badge --}}
                         @if($product->is_new)
-                            <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">NEW RELEASE</span>
+                            <span class="inline-flex items-center gap-1 text-white text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-wide" style="background: linear-gradient(to right, #3b82f6, #6366f1); box-shadow: 0 2px 8px rgba(99,102,241,0.35);">
+                                <svg class="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                NEW RELEASE
+                            </span>
                         @endif
+
+                        {{-- DISCOUNT badge --}}
                         @if($product->discount_price)
-                            <span class="bg-orange text-white text-xs font-bold px-3 py-1 rounded-full">{{ $product->discount_percent }}% OFF</span>
+                            <span class="inline-flex items-center gap-1 text-white text-xs font-black px-3 py-1.5 rounded-full tracking-wide" style="background: linear-gradient(to right, #f97316, #ef4444); box-shadow: 0 2px 8px rgba(249,115,22,0.35);">
+                                <svg class="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+                                </svg>
+                                {{ $product->discount_percent }}% OFF
+                            </span>
                         @endif
-                        @foreach($product->categories as $category)
-                            <span class="bg-gray-100 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full uppercase border border-gray-200">{{ $category->name }}</span>
+
+                        {{-- CATEGORY badges - inline styles to avoid Tailwind purge --}}
+                        @php
+                            $categoryStyles = [
+                                0 => ['bg' => '#f5f3ff', 'border' => '#ddd6fe', 'text' => '#7c3aed'], // purple
+                                1 => ['bg' => '#f0fdfa', 'border' => '#99f6e4', 'text' => '#0d9488'], // teal
+                                2 => ['bg' => '#fff1f2', 'border' => '#fecdd3', 'text' => '#e11d48'], // rose
+                                3 => ['bg' => '#fffbeb', 'border' => '#fde68a', 'text' => '#d97706'], // amber
+                                4 => ['bg' => '#ecfeff', 'border' => '#a5f3fc', 'text' => '#0891b2'], // cyan
+                            ];
+                        @endphp
+                        @foreach($product->categories as $i => $category)
+                            @php $s = $categoryStyles[$i % 5]; @endphp
+                            <span class="inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide border"
+                                  style="background-color: {{ $s['bg'] }}; border-color: {{ $s['border'] }}; color: {{ $s['text'] }};">
+                                <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                                </svg>
+                                {{ $category->name }}
+                            </span>
                         @endforeach
+
                     </div>
                     
-                    <h1 class="text-3xl lg:text-4xl font-black text-gray-900 leading-tight">{{ $product->name }}</h1>
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 leading-tight">{{ $product->name }}</h1>
                 </div>
 
                 {{-- Pricing --}}

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — KylariaSHOP</title>
+    <title>Login — HoobyShoop</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -17,7 +17,7 @@
         <div class="absolute top-20 left-20 w-64 h-64 rounded-full bg-orange/20 blur-3xl z-0"></div>
         <div class="absolute bottom-20 right-10 w-48 h-48 rounded-full bg-blue-500/10 blur-3xl z-0"></div>
         <div class="relative z-20 text-center">
-            <h1 class="text-4xl font-black text-white mb-2">Kylaria SHOP</h1>
+            <h1 class="text-4xl font-black text-white mb-2">Hooby SHOP</h1>
             <p class="text-gray-400 text-sm">Your hobby figures & merchandise store</p>
         </div>
     </div>
@@ -27,13 +27,13 @@
         <div class="w-full max-w-md">
             {{-- Mobile logo --}}
             <div class="lg:hidden text-center mb-8">
-                <h1 class="text-2xl font-black text-gray-900">Kylaria SHOP</h1>
+                <h1 class="text-2xl font-black text-gray-900">Hooby SHOP</h1>
             </div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
                 <div class="mb-7">
                     <h2 class="text-2xl font-black text-gray-900">Selamat Datang Kembali</h2>
-                    <p class="text-sm text-gray-500 mt-1">Masuk ke akun KylariaSHOP kamu</p>
+                    <p class="text-sm text-gray-500 mt-1">Masuk ke akun HoobyShoop kamu</p>
                 </div>
 
                 {{-- Validation Errors --}}

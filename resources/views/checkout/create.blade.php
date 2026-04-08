@@ -1,4 +1,4 @@
-<x-app-layout title="Checkout - KylariaSHOP" :showSearch="false">
+﻿<x-app-layout title="Checkout - HoobyShoop" :showSearch="false">
 
     <div class="max-w-6xl mx-auto px-4 py-8">
 
@@ -8,7 +8,7 @@
                 <a href="{{ route('cart') }}" class="text-gray-900 hover:text-orange transition-colors">
                     <img src="{{ asset('images/back-icon.png') }}" alt="Back" class="w-6 h-6">
                 </a>
-                <span class="text-xl font-bold tracking-wide">KylariaSHOP</span>
+                <span class="text-xl font-bold tracking-wide">HoobyShoop</span>
             </div>
             <div class="flex items-center">
                 <div class="h-8 w-px bg-gray-400 mr-4"></div>
@@ -125,9 +125,9 @@
 
                 {{-- About --}}
                 <div class="flex flex-col">
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Kylaria SHOP</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Hooby SHOP</h3>
                     <p class="text-sm font-medium leading-relaxed mb-6">
-                        Kylaria Shop is a place that sells hobby toys ranging from figures to costumes.
+                        Hooby SHOP is a place that sells hobby toys ranging from figures to costumes.
                     </p>
                     <div class="flex gap-4 items-center">
                         <a href="#" class="text-gray-400 hover:text-gray-900 transition-colors">

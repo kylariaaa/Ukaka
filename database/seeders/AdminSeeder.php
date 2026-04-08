@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace Database\Seeders;
 
@@ -14,7 +14,7 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         Admin::updateOrCreate(
-        ['email' => 'admin@kylariashop.com'],
+        ['email' => 'admin@HoobyShoop.com'],
         [
             'name' => 'Edmin',  
             'password' => Hash::make('password'),

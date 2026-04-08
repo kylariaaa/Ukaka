@@ -1,4 +1,4 @@
-<x-app-layout title="Riwayat Pembayaran — KylariaSHOP" :showSearch="false">
+﻿<x-app-layout title="Riwayat Pembayaran — HoobyShoop" :showSearch="false">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {{-- Header --}}

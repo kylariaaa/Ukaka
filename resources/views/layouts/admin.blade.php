@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'Admin Dashboard' }} - KylariaSHOP</title>
+    <title>{{ $title ?? 'Admin Dashboard' }} - HoobyShoop</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
@@ -123,7 +123,7 @@
                 <div style="text-align:center;margin-top:2rem;">
                     <a href="{{ route('admin.dashboard') }}"
                         style="color:#fff;font-size:1.875rem;font-weight:900;line-height:1.2;letter-spacing:0.05em;text-decoration:none;display:block;">
-                        Kylaria<br>SHOP
+                        Hooby<br>Shoop
                     </a>
                 </div>
 
@@ -173,10 +173,10 @@
 
             {{-- Flash Messages --}}
             @if(session('success'))
-                <div
-                    style="background:#dcfce7;border:1px solid #86efac;color:#166534;padding:0.75rem 1rem;border-radius:0.5rem;margin-bottom:1.5rem;">
-                    {{ session('success') }}
-                </div>
+            <div
+                style="background:#dcfce7;border:1px solid #86efac;color:#166534;padding:0.75rem 1rem;border-radius:0.5rem;margin-bottom:1.5rem;">
+                {{ session('success') }}
+            </div>
             @endif
 
             {{ $slot }}
@@ -216,7 +216,7 @@
             closeIcon.style.display = 'none';
         }
 
-        document.addEventListener('keydown', function (e) {
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeSidebar();
         });
     </script>

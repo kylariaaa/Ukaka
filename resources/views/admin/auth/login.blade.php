@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login — KylariaSHOP</title>
+    <title>Admin Login — HobbyShop</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -16,7 +16,7 @@
         <div class="absolute top-20 left-20 w-64 h-64 rounded-full bg-red-500/20 blur-3xl z-0"></div>
         <div class="absolute bottom-20 right-10 w-48 h-48 rounded-full bg-orange-500/10 blur-3xl z-0"></div>
         <div class="relative z-20 text-center">
-            <h1 class="text-4xl font-black text-white mb-2">Kylaria SHOP <span class="text-xs align-top font-bold text-red-200">ADMIN</span></h1>
+            <h1 class="text-4xl font-black text-white mb-2">Hooby SHOP <span class="text-xs align-top font-bold text-red-200">ADMIN</span></h1>
             <p class="text-red-200 text-sm">Administrator Control Panel</p>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="w-full max-w-md">
             {{-- Mobile logo --}}
             <div class="lg:hidden text-center mb-8">
-                <h1 class="text-2xl font-black text-[#4A0505]">Kylaria SHOP <span class="text-xs align-top font-bold text-red-700">ADMIN</span></h1>
+                <h1 class="text-2xl font-black text-[#4A0505]">Hooby SHOP <span class="text-xs align-top font-bold text-red-700">ADMIN</span></h1>
             </div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
@@ -51,7 +51,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Admin Email</label>
                         <input type="email" name="email" id="email" value="{{ old('email') }}" required autofocus
-                            placeholder="admin@kylariashop.com"
+                            placeholder="admin@HoobyShoop.com"
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4A0505]/40 focus:border-[#4A0505] transition-all">
                     </div>
 

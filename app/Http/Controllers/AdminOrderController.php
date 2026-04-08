@@ -14,12 +14,6 @@ class AdminOrderController extends Controller
     {
         $orders = Order::with(['user', 'orderItems.product'])
             ->where('status', 'process')
-            // Sembunyikan pesanan yang SLA-nya sudah habis
-            // (meski command belum dijalankan, admin tidak akan melihatnya)
-            ->where(function ($q) {
-                $q->whereNull('sla_deadline')
-                  ->orWhere('sla_deadline', '>', now());
-            })
             ->latest()
             ->paginate(15);
 

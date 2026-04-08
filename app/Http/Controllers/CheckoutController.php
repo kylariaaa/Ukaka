@@ -103,7 +103,8 @@ class CheckoutController extends Controller
                     'status'         => 'process',
                     'payment_method' => $request->payment_method,
                     'address'        => $request->address,
-                    'sla_deadline'   => now()->addSeconds(20),
+                    // 'sla_deadline'   => now()->addSeconds(20),
+                    'sla_deadline'   => now()->addDays(7),
                 ]);
 
                 // ── Buat Order Items & Kurangi Stok ──────────────────────────────

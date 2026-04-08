@@ -13,10 +13,6 @@ class AdminController extends Controller
      */
     public function index()
     {
-        // For now, assume orders table has a string 'status' column. 
-        // We'll just aggregate these values.
-
-        // Ensure Orders table exists to query against it.
         $completedOrdersCount = Order::where('status', 'finished')->count();
         $enteredOrdersCount = Order::where('status', 'process')->count();
 

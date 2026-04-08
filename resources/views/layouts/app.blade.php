@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="KylariaSHOP — Toko hobby figure, acrylic stand, dan merchandise anime terpercaya.">
-    <title>{{ $title ?? 'KylariaSHOP' }}</title>
+        content="HoobyShoop — Toko hobby figure, acrylic stand, dan merchandise anime terpercaya.">
+    <title>{{ $title ?? 'HoobyShoop' }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -65,7 +65,7 @@
                 </a>
 
                 {{-- Search Bar --}}
-                @if($showSearch)
+                <!-- @if($showSearch)
                     <div class="hidden md:flex flex-1 max-w-md mx-8">
                         <form action="{{ route('products.index') }}" method="GET" class="relative w-full">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -76,7 +76,7 @@
                                 class="w-full pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange/50 focus:border-orange transition-all">
                         </form>
                     </div>
-                @endif
+                @endif -->
 
                 {{-- Right side icons group --}}
                 <div class="flex items-center gap-2 sm:gap-4">
@@ -262,9 +262,9 @@
 
                 {{-- Brand --}}
                 <div>
-                    <h3 style="font-size:1.125rem;font-weight:700;color:#fff;margin-bottom:0.75rem;">Kylaria SHOP</h3>
+                    <h3 style="font-size:1.125rem;font-weight:700;color:#fff;margin-bottom:0.75rem;">Hooby SHOP</h3>
                     <p style="font-size:0.875rem;color:rgba(255,255,255,0.85);line-height:1.6;margin-bottom:1rem;">
-                        Kylaria Shop is a place that sells hobby toys ranging from figures to costumes.
+                        Hooby SHOP is a place that sells hobby toys ranging from figures to costumes.
                     </p>
                     <div class="flex items-center gap-3">
                         <a href="#"
@@ -335,7 +335,7 @@
 
             <div
                 style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.3);text-align:center;">
-                <p style="font-size:0.75rem;color:rgba(255,255,255,0.7);">&copy; {{ date('Y') }} KylariaSHOP. All rights
+                <p style="font-size:0.75rem;color:rgba(255,255,255,0.7);">&copy; {{ date('Y') }} HoobyShoop. All rights
                     reserved.</p>
             </div>
         </div>
@@ -348,29 +348,29 @@
         }
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', function (event) {
-            const dropdown = document.getElementById('profile-dropdown');
-            if (dropdown && !dropdown.contains(event.target)) {
-                document.getElementById('dropdown-menu').classList.add('hidden');
-            }
-        });
+        // document.addEventListener('click', function (event) {
+        //     const dropdown = document.getElementById('profile-dropdown');
+        //     if (dropdown && !dropdown.contains(event.target)) {
+        //         document.getElementById('dropdown-menu').classList.add('hidden');
+        //     }
+        // });
 
         // Mobile menu toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const hamIcon = document.getElementById('mobile-ham-icon');
-            const closeIcon = document.getElementById('mobile-close-icon');
-            const isOpen = !menu.classList.contains('hidden');
-            if (isOpen) {
-                menu.classList.add('hidden');
-                hamIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
-            } else {
-                menu.classList.remove('hidden');
-                hamIcon.classList.add('hidden');
-                closeIcon.classList.remove('hidden');
-            }
-        }
+        // function toggleMobileMenu() {
+        //     const menu = document.getElementById('mobile-menu');
+        //     const hamIcon = document.getElementById('mobile-ham-icon');
+        //     const closeIcon = document.getElementById('mobile-close-icon');
+        //     const isOpen = !menu.classList.contains('hidden');
+        //     if (isOpen) {
+        //         menu.classList.add('hidden');
+        //         hamIcon.classList.remove('hidden');
+        //         closeIcon.classList.add('hidden');
+        //     } else {
+        //         menu.classList.remove('hidden');
+        //         hamIcon.classList.add('hidden');
+        //         closeIcon.classList.remove('hidden');
+        //     }
+        // }
     </script>
 </body>
 

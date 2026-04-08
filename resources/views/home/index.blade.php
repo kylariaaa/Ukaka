@@ -1,13 +1,13 @@
-<x-app-layout title="KylariaSHOP — Hobby Figures & Merchandise">
+﻿<x-app-layout title="HoobyShoop — Hobby Figures & Merchandise">
 
     {{-- BANNER/HERO CAROUSEL --}}
     <section class="relative overflow-hidden bg-gray-900">
         <div class="banner-track flex" id="banner-track">
             @php
                 $slides = [
-                    ['img' => 'images/slideshow (1).png', 'accent' => '#FF8A4C', 'text' => 'Lunar Day Special', 'sub' => 'Diskon up to 15%'],
+                    ['img' => 'images/slideshow(1).png', 'accent' => '#FF8A4C', 'text' => 'Lunar Day Special', 'sub' => 'Diskon up to 15%'],
                     ['img' => 'images/slideshow (2).png', 'accent' => '#4CAF50', 'text' => 'New Arrivals 2025', 'sub' => 'Figure & Model Kit Terbaru'],
-                    ['img' => 'images/slideshow (3).png', 'accent' => '#e94560', 'text' => 'Flash Sale', 'sub' => 'Acrylic Stand & Merchandise'],
+                    ['img' => 'images/slideshow.png', 'accent' => '#e94560', 'text' => 'Flash Sale', 'sub' => 'Acrylic Stand & Merchandise'],
                 ];
             @endphp
             @foreach($slides as $i => $s)
@@ -113,7 +113,7 @@
                     </div>
                     {{-- Products --}}
                     @foreach($lunarSales->take(4) as $i => $product)
-                        <div class="sale-item" data-index="{{ $i }}">
+                        <div class="sale-item h-full" data-index="{{ $i }}">
                             <x-product-card :product="$product" />
                         </div>
                     @endforeach
@@ -141,7 +141,7 @@
                     </div>
                     {{-- Products --}}
                     @foreach($flashSales->take(4) as $i => $product)
-                        <div class="sale-item" data-index="{{ $i }}">
+                        <div class="sale-item h-full" data-index="{{ $i }}">
                             <x-product-card :product="$product" />
                         </div>
                     @endforeach
