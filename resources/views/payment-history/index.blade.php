@@ -12,12 +12,18 @@
         @if($orders->count() > 0)
             <div class="space-y-4">
                 @foreach($orders as $order)
+                @php
+                    // Dihitung satu kali per order, dipakai di seluruh kartu
+                    $isCancelled = in_array($order->status, ['rejected', 'expired'])
+                        || ($order->status === 'process' && $order->sla_deadline && now()->isAfter($order->sla_deadline));
+                @endphp
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                     {{-- Order Header --}}
                     <div class="flex items-center justify-between px-5 py-3 bg-gray-50 border-b border-gray-100">
                         <div class="flex items-center gap-3">
-                            {{-- Status Indicator --}}
-                            <div class="w-3 h-full min-h-[20px] rounded-full {{ $order->status === 'finished' ? 'bg-green-500' : ($order->status === 'rejected' ? 'bg-red-500' : 'bg-orange') }}"></div>
+                            {{-- Status Indicator Dot --}}
+                            <div class="w-3 h-full min-h-[20px] rounded-full
+                                {{ $order->status === 'finished' ? 'bg-green-500' : ($isCancelled ? 'bg-red-500' : 'bg-orange') }}"></div>
                             <div>
                                 <p class="text-xs text-gray-500">Kode Order</p>
                                 <p class="text-sm font-bold text-gray-800 font-mono">{{ $order->order_code }}</p>
@@ -29,13 +35,72 @@
                         </div>
                     </div>
 
+                    {{-- ⏰ SLA Countdown Banner — hanya tampil saat status 'process' --}}
+                    @if($order->status === 'process' && $order->sla_deadline)
+                        @php
+                            $remainSec = now()->diffInSeconds($order->sla_deadline, false);
+                        @endphp
+                        @if($remainSec > 0)
+                        <div class="mx-4 mt-3 mb-1 px-4 py-2.5 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-2"
+                             id="sla-banner-{{ $order->id }}">
+                            <svg class="w-4 h-4 text-amber-500 flex-shrink-0 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <p class="text-xs text-amber-700">
+                                Pesanan akan otomatis dibatalkan dalam
+                                <span class="font-bold" id="sla-countdown-{{ $order->id }}">--</span>
+                                jika admin belum merespons.
+                            </p>
+                        </div>
+                        <script>
+                            (function() {
+                                var deadline = new Date('{{ $order->sla_deadline->toIso8601String() }}');
+                                var el = document.getElementById('sla-countdown-{{ $order->id }}');
+                                var banner = document.getElementById('sla-banner-{{ $order->id }}');
+                                function tick() {
+                                    var diff = Math.floor((deadline - Date.now()) / 1000);
+                                    if (diff <= 0) {
+                                        el.textContent = '0 detik';
+                                        banner.classList.remove('bg-amber-50','border-amber-200');
+                                        banner.classList.add('bg-red-50','border-red-300');
+                                        el.closest('p').classList.replace('text-amber-700','text-red-700');
+                                        el.closest('p').innerHTML = '⛔ SLA habis! Pesanan ini akan segera dibatalkan oleh sistem.';
+                                        return;
+                                    }
+                                    var days  = Math.floor(diff / 86400);
+                                    var hours = Math.floor((diff % 86400) / 3600);
+                                    var mins  = Math.floor((diff % 3600) / 60);
+                                    var secs  = diff % 60;
+                                    var parts = [];
+                                    if (days  > 0) parts.push(days  + ' hari');
+                                    if (hours > 0) parts.push(hours + ' jam');
+                                    if (mins  > 0) parts.push(mins  + ' menit');
+                                    parts.push(secs + ' detik');
+                                    el.textContent = parts.join(' ');
+                                }
+                                tick();
+                                setInterval(tick, 1000);
+                            })();
+                        </script>
+                        @else
+                        <div class="mx-4 mt-3 mb-1 px-4 py-2.5 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2">
+                            <svg class="w-4 h-4 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <p class="text-xs text-red-700 font-semibold">⛔ SLA habis! Pesanan ini akan segera dibatalkan oleh sistem.</p>
+                        </div>
+                        @endif
+                    @endif
+
                     {{-- Order Items --}}
                     @foreach($order->orderItems as $item)
                     @if($item->product)
                     <div class="flex items-center gap-4 px-5 py-4 border-b border-gray-50 last:border-0">
 
                         {{-- Status Stripe --}}
-                        <div class="w-1 self-stretch rounded-full {{ $order->status === 'finished' ? 'bg-green-500' : ($order->status === 'rejected' ? 'bg-red-500' : 'bg-orange') }} flex-shrink-0"></div>
+                        <div class="w-1 self-stretch rounded-full
+                            {{ $order->status === 'finished' ? 'bg-green-500' : ($isCancelled ? 'bg-red-500' : 'bg-orange') }}
+                            flex-shrink-0"></div>
 
                         {{-- Product Image --}}
                         <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
@@ -66,13 +131,17 @@
                                 <div class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center">
                                     <img src="{{ asset('images/check-icon.png') }}" alt="Finished" class="w-5 h-5">
                                 </div>
-                                <p class="text-xs font-semibold text-gray-700">Finished</p>
-                            @elseif($order->status === 'rejected')
+                                <p class="text-xs font-semibold text-green-600">Finished</p>
+
+                            @elseif($isCancelled)
+                                {{-- Dibatalkan: rejected, expired, atau process yang SLA-nya sudah habis --}}
                                 <div class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center">
                                     <img src="{{ asset('images/cancel-icon.png') }}" alt="Dibatalkan" class="w-5 h-5">
                                 </div>
                                 <p class="text-xs font-semibold text-red-600">Dibatalkan</p>
+
                             @else
+                                {{-- Masih diproses & SLA masih berlaku --}}
                                 <div class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center">
                                     <img src="{{ asset('images/proses-icon.png') }}" alt="Proses" class="w-5 h-5 animate-spin">
                                 </div>

@@ -8,13 +8,18 @@ use Illuminate\Http\Request;
 class AdminOrderController extends Controller
 {
     /**
-     * Display a listing of incoming orders (Items).
+     * Tampilkan daftar pesanan aktif (process) beserta info SLA.
      */
     public function index()
     {
-        // Fetch order items that belong to an order with status 'process'
         $orders = Order::with(['user', 'orderItems.product'])
             ->where('status', 'process')
+            // Sembunyikan pesanan yang SLA-nya sudah habis
+            // (meski command belum dijalankan, admin tidak akan melihatnya)
+            ->where(function ($q) {
+                $q->whereNull('sla_deadline')
+                  ->orWhere('sla_deadline', '>', now());
+            })
             ->latest()
             ->paginate(15);
 
@@ -22,42 +27,51 @@ class AdminOrderController extends Controller
     }
 
     /**
-     * Accept an order (change status to finished, deduct stock).
+     * Terima pesanan — ubah status ke 'finished'.
+     *
+     * CATATAN: Stok sudah dikurangi saat checkout (CheckoutController::store).
+     * Di sini TIDAK melakukan pengurangan stok lagi untuk menghindari double-deduct.
      */
     public function accept(Request $request, $id)
     {
-        $order = Order::with('orderItems.product')->findOrFail($id);
+        $order = Order::findOrFail($id);
 
         if ($order->status !== 'process') {
             return back()->withErrors(['error' => 'Pesanan tidak valid untuk diterima.']);
         }
 
-        // Deduct stock for each item in the order
-        foreach ($order->orderItems as $item) {
-            if ($item->product) {
-                $item->product->decrement('stock', $item->quantity);
-            }
-        }
-
         $order->update(['status' => 'finished']);
 
-        return redirect()->route('admin.orders.index')->with('success', 'Pesanan berhasil diterima dan stok diperbarui.');
+        return redirect()
+            ->route('admin.orders.index')
+            ->with('success', 'Pesanan berhasil diterima.');
     }
 
     /**
-     * Reject an order (change status to rejected).
-     * Stock is NOT returned because it was never deducted (deduction only happens on accept).
+     * Tolak pesanan — ubah status ke 'rejected' dan KEMBALIKAN stok.
+     *
+     * Stok dikembalikan karena sudah dikurangi saat checkout.
+     * Produk kostum (rental) tidak punya stok, jadi dilewati.
      */
     public function reject(Request $request, $id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with('orderItems.product')->findOrFail($id);
 
         if ($order->status !== 'process') {
             return back()->withErrors(['error' => 'Pesanan tidak valid untuk ditolak.']);
         }
 
+        // Kembalikan stok untuk produk biasa (bukan kostum/rental)
+        foreach ($order->orderItems as $item) {
+            if ($item->product && is_null($item->rental_days)) {
+                $item->product->increment('stock', $item->quantity);
+            }
+        }
+
         $order->update(['status' => 'rejected']);
 
-        return redirect()->route('admin.orders.index')->with('success', 'Pesanan berhasil ditolak.');
+        return redirect()
+            ->route('admin.orders.index')
+            ->with('success', 'Pesanan ditolak dan stok produk telah dikembalikan.');
     }
 }

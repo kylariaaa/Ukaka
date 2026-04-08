@@ -81,7 +81,7 @@
             </div>
 
             <div class="mt-6">
-                {{ $orders->links() }}
+                {{ $orders->links('vendor.pagination.admin') }}
             </div>
 
         </div>

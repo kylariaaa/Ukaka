@@ -182,7 +182,7 @@
                 </div>
                 {{-- Pagination --}}
                 <div class="mt-6">
-                    {{ $newReleases->links() }}
+                    {{ $newReleases->links('vendor.pagination.tailwind') }}
                 </div>
             </section>
         @endif

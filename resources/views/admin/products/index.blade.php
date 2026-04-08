@@ -111,7 +111,7 @@
             </div>
 
             <div style="margin-top:0.5rem; padding-top:1.5rem; border-top:1px solid #e5e7eb;">
-                {{ $products->links() }}
+                {{ $products->links('vendor.pagination.admin') }}
             </div>
 
         </div>
