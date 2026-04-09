@@ -279,7 +279,7 @@ class DummyProductSeeder extends Seeder
                 'description'   => 'Akrilik stand Bronya dari Honkai Star Rail dengan desain eksklusif limited edition.',
             ],
             [
-                'name'          => 'Acrylic Stand – Honkai Star Rail Bronya',
+                'name'          => 'Acrylic Stand – Honkai Star Rail Bronyaaaa',
                 'image'         => 'images/arcylicstand4.webp',
                 'price'         => 66666,
                 'discount_price'=> 6000,

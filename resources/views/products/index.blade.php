@@ -1,6 +1,6 @@
 ﻿<x-app-layout title="{{ $pageTitle }} - HoobyShoop">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {{-- Breadcrumbs & Title --}}
         <div class="mb-8">
             <h1 class="text-2xl font-black text-gray-900">{{ $pageTitle }}</h1>
@@ -10,11 +10,11 @@
         </div>
 
         <div class="flex flex-col md:flex-row gap-8">
-            
+
             {{-- Sidebar Filters --}}
             <aside class="w-full md:w-64 flex-shrink-0">
                 <form action="{{ url()->current() }}" method="GET" id="filter-form" class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm sticky top-20">
-                    
+
                     {{-- Preserve existing search if present --}}
                     @if(request('search'))
                         <input type="hidden" name="search" value="{{ request('search') }}">
@@ -24,7 +24,7 @@
                         <h3 class="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Kategori</h3>
                         <div class="space-y-2">
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="category" value="" onchange="this.form.submit()" 
+                                <input type="radio" name="category" value="" onchange="this.form.submit()"
                                        class="text-orange focus:ring-orange" {{ !request('category') ? 'checked' : '' }}>
                                 <span class="text-sm text-gray-600">Semua Kategori</span>
                             </label>
@@ -35,6 +35,10 @@
                                     <span class="text-sm text-gray-600">{{ $cat->name }}</span>
                                 </label>
                             @endforeach
+                            
+                        {{-- bisa ditambahkan kategori yang lain --}}
+
+
                         </div>
                     </div>
 
