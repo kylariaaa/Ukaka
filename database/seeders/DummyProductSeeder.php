@@ -270,7 +270,7 @@ class DummyProductSeeder extends Seeder
             ],
             [
                 'name'          => 'Acrylic Stand – Honkai Star Rail Bronya',
-                'image'         => 'images/arcylicstand1.jpg',
+                'image'         => 'images/arcylicstand2.jpg',
                 'price'         => 75000,
                 'discount_price'=> 65000,
                 'stock'         => 20,
@@ -279,8 +279,28 @@ class DummyProductSeeder extends Seeder
                 'description'   => 'Akrilik stand Bronya dari Honkai Star Rail dengan desain eksklusif limited edition.',
             ],
             [
-                'name'          => 'Acrylic Stand – Blue Archive Hina',
-                'image'         => 'images/arcylicstand1.jpg',
+                'name'          => 'Acrylic Stand – Honkai Star Rail Bronya',
+                'image'         => 'images/arcylicstand4.webp',
+                'price'         => 66666,
+                'discount_price'=> 6000,
+                'stock'         => 28,
+                'sale_type'     => 'lunar_day',
+                'is_new'        => true,
+                'description'   => 'Akrilik stand Hina dari Blue Archive, cetak UV full color tahan pudar.',
+            ],
+                        [
+                'name'          => 'Acrylic Stand – Blue Archive__Hina',
+                'image'         => 'images/arcylicstand5.png',
+                'price'         => 7000000,
+                'discount_price'=> 10000,
+                'stock'         => 28,
+                'sale_type'     => 'lunar_day',
+                'is_new'        => true,
+                'description'   => 'Akrilik stand Hina dari Blue Archive, cetak UV full color tahan pudar.',
+            ],
+                        [
+                'name'          => 'Acrylic Stand – Blue oshinoko',
+                'image'         => 'images/arcylicstand3.jpg',
                 'price'         => 70000,
                 'discount_price'=> null,
                 'stock'         => 28,
@@ -288,6 +308,7 @@ class DummyProductSeeder extends Seeder
                 'is_new'        => true,
                 'description'   => 'Akrilik stand Hina dari Blue Archive, cetak UV full color tahan pudar.',
             ],
+
         ];
 
         foreach ($acrylics as $data) {

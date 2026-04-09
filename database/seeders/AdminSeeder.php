@@ -1,9 +1,9 @@
-﻿<?php
+<?php
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
 use Illuminate\Database\Seeder;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
@@ -16,7 +16,7 @@ class AdminSeeder extends Seeder
         Admin::updateOrCreate(
         ['email' => 'admin@HoobyShoop.com'],
         [
-            'name' => 'Edmin',  
+            'name' => 'Edmin',
             'password' => Hash::make('password'),
         ]
         );

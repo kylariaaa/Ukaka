@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* Desktop-only navbar items: guaranteed visible above 640px */
@@ -65,7 +66,7 @@
                 </a>
 
                 {{-- Search Bar --}}
-                <!-- @if($showSearch)
+                @if($showSearch)
                     <div class="hidden md:flex flex-1 max-w-md mx-8">
                         <form action="{{ route('products.index') }}" method="GET" class="relative w-full">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -76,7 +77,7 @@
                                 class="w-full pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange/50 focus:border-orange transition-all">
                         </form>
                     </div>
-                @endif -->
+                @endif
 
                 {{-- Right side icons group --}}
                 <div class="flex items-center gap-2 sm:gap-4">
@@ -347,30 +348,30 @@
             menu.classList.toggle('hidden');
         }
 
-        // Close dropdown when clicking outside
-        // document.addEventListener('click', function (event) {
-        //     const dropdown = document.getElementById('profile-dropdown');
-        //     if (dropdown && !dropdown.contains(event.target)) {
-        //         document.getElementById('dropdown-menu').classList.add('hidden');
-        //     }
-        // });
+        //  Close dropdown when clicking outside
+         document.addEventListener('click', function (event) {
+             const dropdown = document.getElementById('profile-dropdown');
+             if (dropdown && !dropdown.contains(event.target)) {
+                 document.getElementById('dropdown-menu').classList.add('hidden');
+             }
+         });
 
-        // Mobile menu toggle
-        // function toggleMobileMenu() {
-        //     const menu = document.getElementById('mobile-menu');
-        //     const hamIcon = document.getElementById('mobile-ham-icon');
-        //     const closeIcon = document.getElementById('mobile-close-icon');
-        //     const isOpen = !menu.classList.contains('hidden');
-        //     if (isOpen) {
-        //         menu.classList.add('hidden');
-        //         hamIcon.classList.remove('hidden');
-        //         closeIcon.classList.add('hidden');
-        //     } else {
-        //         menu.classList.remove('hidden');
-        //         hamIcon.classList.add('hidden');
-        //         closeIcon.classList.remove('hidden');
-        //     }
-        // }
+        //  Mobile menu toggle
+         function toggleMobileMenu() {
+             const menu = document.getElementById('mobile-menu');
+             const hamIcon = document.getElementById('mobile-ham-icon');
+             const closeIcon = document.getElementById('mobile-close-icon');
+             const isOpen = !menu.classList.contains('hidden');
+             if (isOpen) {
+                 menu.classList.add('hidden');
+                 hamIcon.classList.remove('hidden');
+                 closeIcon.classList.add('hidden');
+             } else {
+                 menu.classList.remove('hidden');
+                 hamIcon.classList.add('hidden');
+                 closeIcon.classList.remove('hidden');
+             }
+         }
     </script>
 </body>
 

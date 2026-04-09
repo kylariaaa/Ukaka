@@ -21,7 +21,6 @@ require __DIR__ . '/auth.php';
 
 // Auth-protected routes
 Route::middleware('auth')->group(function () {
-    // User dashboard: always redirect to home (users are not admins)
     Route::get('/dashboard', function () {
             return redirect()->route('home');
         }
@@ -36,7 +35,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/payment-history', [PaymentHistoryController::class , 'index'])->name('payment-history');
     });
 
-// Admin public routes (no auth required)
+// Admin public routes
 Route::prefix('admin')->group(function () {
     Route::get('/login', [\App\Http\Controllers\Admin\Auth\AdminAuthController::class , 'showLoginForm'])->name('admin.login');
     Route::post('/login', [\App\Http\Controllers\Admin\Auth\AdminAuthController::class , 'login'])->name('admin.login.submit');
